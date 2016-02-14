@@ -1,0 +1,49 @@
+<template name="navbar">
+    
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            
+            <div class="navbar-header"> <!-- Brand -->
+                <a class="navbar-brand" href="/">
+                    Sierra Mountain Bike Co.
+                </a>
+            </div>
+            
+            <div class="nav navbar-right"> <!-- Login -->
+                <ul class="nav navbar-nav navbar-text">
+                    <li>
+                        {{#if isLoggedIn }}
+                            {{> loggedInButtons }}
+                        {{ else }}
+                            {{> loginButtons }}
+                        {{/if}}
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+    
+</template>
+
+<template name="loginButtons">
+    <p>
+        <a href="/login" >Login/Register</a>
+    </p>
+</template>
+
+<template name="loggedInButtons">
+    <p class="dropdown-panel">
+        <div class="dropdown">
+            <a class="dropdown-toggle" id="dropdownLoggedIn" data-toggle="dropdown" aria-expanded="true" aria-haspopup="true">
+                {{ username }}
+                <b class="caret"></b>	
+            </a>
+            
+            <div class="dropdown-menu" aria-labelledby="dropdownLoggedIn">
+                <button class="button logOut">Sign Out</button>
+            </div>
+        </div>
+        
+    </p>
+</template>

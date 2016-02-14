@@ -1,0 +1,21 @@
+# Meteor and TypeScript Ignores
+.meteor/
+typings/
+
+# *nix Ignores
+
+*.swp
+
+# OS X Ignores
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows Ignores
+
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
