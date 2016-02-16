@@ -11,6 +11,9 @@ Template.registration.events({
         $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
     },
     
+    /**
+     * Handle Register new user
+     */
     'submit form.register-form': function (event) {
         event.preventDefault();
         var name = $('.register-form [name=name]').val();
@@ -27,6 +30,9 @@ Template.registration.events({
         Router.go("/");
     },
     
+    /**
+     * Handle login existing user
+     */
     'submit form.login-form': function(event){
         event.preventDefault();
         var email = $('.login-form input[name=email]').val();
