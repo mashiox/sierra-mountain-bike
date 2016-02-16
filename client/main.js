@@ -51,3 +51,93 @@ Router.route("/ems", function(){
         this.render("index", { to: "main"} );
     }
 })
+
+/**
+ * Iron:Router
+ * --- Employee Management System
+ *     --- Employee Detail
+ */
+Router.route("/ems/:_id", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() /* && Meteor.user().profile.accessLevel >= 1000 */ ){
+        // var employee = Employee.findOne({_id: this.params._id});
+        var employee = {_id: this.params._id};
+        if ( employee ){
+            Session.set("employeeId", this.params._id);
+            this.render("emsDetail", { to: "main"} );
+        }
+        else {
+            this.render("employeeNotFound", { to: "main"} );
+        }
+    }
+    else {
+        this.render("index", { to: "main"} );
+    }
+})
+
+/**
+ * Iron:Router
+ * --- Inventory Management System
+ */
+Router.route("/inventory", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() /* && Meteor.user().profile.accessLevel >= N */ ){
+        this.render("inventory", { to: "main"} );
+    }
+    else {
+        this.render("index", { to: "main"} );
+    }
+})
+
+/**
+ * Iron:Router
+ * --- Repair Ticket Management System
+ */
+Router.route("/ticket", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() /* && Meteor.user().profile.accessLevel >= 2 */){
+        this.render("ticket", { to: "main"} );
+    }
+    else {
+        // ???
+        this.render("index", { to: "main"} );
+    }
+})
+
+/**
+ * Iron:Router
+ * --- Repair Ticket Management System
+ *     --- Ticket Detail
+ */
+Router.route("/ticket/:_id", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() /* && Meteor.user().profile.accessLevel >= 2 */ ){
+        // var ticket = Tickets.findOne({_id: this.params._id});
+        var ticket = {_id: this.params._id};
+        if ( ticket ){
+            Session.set("ticketId", this.params._id);
+            this.render("ticketDetail", { to: "main"} );
+        }
+        else {
+            this.render("ticketNotFound", { to: "main"} );
+        }
+    }
+    else {
+        this.render("index", { to: "main"} );
+    }
+})
+
+
+/**
+ * Iron:Router
+ * --- Vendor Managmenet System
+ */
+Router.route("/vendor", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() ){
+        this.render("vendor", { to: "main"} );
+    }
+    else {
+        this.render("index", { to: "main"} );
+    }
+})

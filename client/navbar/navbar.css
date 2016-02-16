@@ -17,3 +17,7 @@
     min-width: 300px;
     padding: 15px;
 }
+
+.navbar-ul-item {
+    margin-bottom: 0;
+}
