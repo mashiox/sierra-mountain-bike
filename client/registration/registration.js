@@ -19,21 +19,24 @@ Template.registration.events({
         var name = $('.register-form [name=name]').val();
         var password = $('.register-form [name=password]').val();
         var email = $('.register-form [name=email]').val();
-        Accounts.createUser({
-            email: email,
-            password: password,
-            username: name,
-            profile: {
-                // TODO: Populate with correct data.
-                name: name,
-                title: "Associate",
-                access: 0
+        // Using Track static, create user...
+        SMBC.Track.createUser(name, email, password, function(error){
+            /**
+             * Callback handler function.
+             * Only if a error does not occur, create a new Track object session variable
+             * for the user, and move the user to the index.
+             * TODO: (if necessary) If an error has occured, handle it.
+             * Some error handling is done within SMBC.Track.createUser()
+             */
+            if ( !error ){
+                var track = new SMBC.Track(Meteor.user().username, Meteor.userId(), Meteor.user().profile.title, Meteor.user().profile.access );
+                Session.set("track", track);
+                Router.go("/");
             }
-        }, function(error){
-            // TODO: Handle any errors...
-            console.log(error);
+            else {
+                // TODO: (if necessary) If an error has occured, handle it.
+            }
         });
-        Router.go("/");
     },
     
     /**
@@ -41,12 +44,25 @@ Template.registration.events({
      */
     'submit form.login-form': function(event){
         event.preventDefault();
+        // Grab the necessary form data
         var email = $('.login-form input[name=email]').val();
         var password = $('.login-form input[name=password]').val();
-        Meteor.loginWithPassword(email, password, function(error){
-            // TODO: Handle any errors...
-            console.log(error);
-        });
-        Router.go("/")
+        
+        // Using Track static, login user
+        SMBC.Track.loginUser(email, password, function(error){
+            /**
+             * Callback handler function.
+             * If a login error occurs, keep the user on the login screen
+             * Otherwise ship them to the index.
+             */
+            if (error){
+                Router.go("/login");
+            }
+            else {
+                var track = new SMBC.Track(Meteor.user().username, Meteor.userId(), Meteor.user().profile.title, Meteor.user().profile.access );
+                Session.set("track", track);
+                Router.go("/");
+            }
+        }); 
     }
 })
