@@ -22,7 +22,13 @@ Template.registration.events({
         Accounts.createUser({
             email: email,
             password: password,
-            username: name
+            username: name,
+            profile: {
+                // TODO: Populate with correct data.
+                name: name,
+                title: "Associate",
+                access: 0
+            }
         }, function(error){
             // TODO: Handle any errors...
             console.log(error);
