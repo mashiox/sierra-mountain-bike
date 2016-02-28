@@ -1,7 +1,45 @@
 <template name="inventory">
     <div class="body-container">
         <div class="item">
-            You are in the IMS
-        </div>   
+        	<header>
+        		
+        	</header>
+        	<input type="text" size="10" maxlength="30">
+			<input type="Submit" value="Search">
+        	
+        </div> 
+       
+        	
+        <div>
+        	<table border="2" cellpadding="2" cellspacing="2" width="100%">
+				<tr>
+					<th bgcolor="lightblue" colspan="6">
+						<h3><b>Inventory</b></h3>
+					</th>
+				</tr>
+				<tr>
+					<td bgcolor="lightblue"><b>Item</b></td>
+					<td bgcolor="lightblue"><b>Condition</b></td>
+					<td bgcolor="lightblue"><b>Category</b></td>
+					<td bgcolor="lightblue"><b>On-Hand</b></td>
+					<td bgcolor="lightblue"><b>On-Order</b></td>
+					<td bgcolor="lightblue"><b>Actions</b></td>
+				</tr>
+				<tr>
+					<td>Row 2</td>
+					<td>Row 2</td>
+					<td>Row 2</td>
+					<td>Row 2</td>
+					<td>Row 2</td>
+					<td>
+						<select>
+							<option selected>Add</option>
+							<option>Delete</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+        </div>
     </div>
+
 </template>
