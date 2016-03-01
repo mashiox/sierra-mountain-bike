@@ -1,0 +1,4 @@
+table#vendorTable tbody tr {
+    text-align: initial;
+    cursor: pointer;
+}

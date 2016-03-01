@@ -1,7 +1,45 @@
 <template name="vendor">
     <div class="body-container">
         <div class="item">
-            You are in the VMS
+            {{ > vendorTable }}
         </div>   
     </div>
+</template>
+
+<template name="vendorTable">
+    <table id="vendorTable" class="table table-hover">
+        <thead>
+            <tr>    <!-- Table Header -->
+                <th>Vendor</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Thing</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {{#each vendor}} -->
+            <tr>
+                <th scope="row">Bike Co.</th>
+                <td>123 Main St.</td>
+                <td>Sucks</td>
+                <td>Aling</td>
+                <input type="hidden" value="123">
+            </tr>
+            <tr>
+                <th scope="row">Bike Co.</th>
+                <td>123 Main St.</td>
+                <td>Sucks</td>
+                <td>Aling</td>
+                <input type="hidden" value="123">
+            </tr>
+            <tr>
+                <th scope="row">Bike Co.</th>
+                <td>123 Main St.</td>
+                <td>Sucks</td>
+                <td>Aling</td>
+                <input type="hidden" value="123">
+            </tr>
+            <!-- {{/each}} -->
+        </tbody>
+    </table>
 </template>
