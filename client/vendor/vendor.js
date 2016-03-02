@@ -11,6 +11,6 @@ Template.vendorTable.events({
     'click tbody tr': function(event){
         event.preventDefault();
         console.log(event);
-        //var vendorId = $()
+        Router.go("/vendor/"+event.currentTarget.getAttribute("vendorid"));
     }
 })

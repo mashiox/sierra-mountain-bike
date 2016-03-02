@@ -141,3 +141,18 @@ Router.route("/vendor", function(){
         this.render("index", { to: "main"} );
     }
 })
+
+/**
+ * Iron:Router
+ * --- Vendor Management System
+ *      --- Vendor Detail
+ */
+Router.route("/vendor/:_id", function(){
+    this.render("navbar", { to: "header"} );
+    if ( Meteor.user() ){
+        this.render("vendorDetail", { to: "main"} );
+    }
+    else {
+        this.render("index", { to: "main"} );
+    }
+})
