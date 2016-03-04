@@ -1,120 +1,91 @@
 <template name="ticket">
     <div class="body-container">
         <div class="item">
-           Repair Ticket Management System
+           <h3>Repair Ticket Management System</h3>
+           <nav id="ticketNavigation">
+                <ul class="pagination">
+                    <li id="Tickets"><a href="#">Repair Tickets</a></li>
+                    <li id="Problems"><a href="#">Common Problems</a></li>
+                </ul>
+            </nav>
+            <div class="tableTickets" id="displayTable">
+                {{ > tickets }}
+            </div>
+            <div class="tableProblems" id="displayTable" style="display:none;">
+                {{ > problems }}
+            </div>
         </div> 
     </div>
-    
-    <body>
-            <table style="width:275%">
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
-                    <th>Date Brought In</th>
-                    <th>Problem</th>
-                    <th>Estimated Cost</th>                   
-                    <th>Status</th>
-                    <th>Resolution</th>
-                    <th>Description</th>
-                </tr>
-                <tbody>
-                <tr>
-                    <td>Arthur Flores</td>
-                    <td>123 Oak Street</td>
-                    <td>(888)123-1234</td>
-                    <td>February 10, 2016</td>
-                    <td>Broken Chain</td>
-                    <td>$20</td>
-                    <td>Open</td>
-                    <td>New Chain</td>
-                    <td>Chain is rusty and old</td>
-                </tr>
-                </tbody>
-            </table>
-          
-            <button type="button" onclick="alert('Add New Ticket Clicked')">Add New Ticket</button> 
-            <button type="button" onclick="alert('Export Data Clicked')">Export Data</button> 
-                
-                
-                <table style="width:275%">
-                <tr>
-                    <th>Typical Problems</th>
-                    <th># of Occurances</th>
-                    <th>How to solve issue</th>
-                </tr>
-                <tbody>
-                <tr>
-                    <td>Broken Chain</td>
-                    <td>1</td>
-                    <td>Step1: Remove Chain from Wheel.
-                        Step2: Put on new chain.
-                    </td>
- 
-                </tr>
-                </tbody>
-            </table>
-            <button type="button" onclick="alert('Add Typical Problem Clicked')">Add Typical Problem</button> 
-                <style>
-                    /* Style The Dropdown Button */
-                    
-                    .dropbtn {
-                        background-color: white;
-                        color: green;
-                        padding: 16px;
-                        font-size: 16px;
-                        border: none;
-                        cursor: pointer;
-                    }
-                    /* The container <div> - needed to position the dropdown content */
-                    
-                    .dropdown {
-                        position: relative;
-                        display: inline-block;
-                    }
-                    /* Dropdown Content (Hidden by Default) */
-                    
-                    .dropdown-content {
-                        display: none;
-                        position: absolute;
-                        background-color: #f9f9f9;
-                        min-width: 160px;
-                        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-                    }
-                    /* Links inside the dropdown */
-                    
-                    .dropdown-content a {
-                        color: black;
-                        padding: 12px 16px;
-                        text-decoration: none;
-                        display: block;
-                    }
-                    /* Change color of dropdown links on hover */
-                    
-                    .dropdown-content a:hover {
-                        background-color: #f1f1f1
-                    }
-                    /* Show the dropdown menu on hover */
-                    
-                    .dropdown:hover .dropdown-content {
-                        display: block;
-                    }
-                    /* Change the background color of the dropdown button when the dropdown content is shown */
-                    
-                    .dropdown:hover .dropbtn {
-                        background-color: #3e8e41;
-                    }
-                </style>
 
-                <div class="dropdown">
-                    <button class="dropbtn">Report</button>
-                    <div class="dropdown-content">
-                        <a href="#">Date Opened</a>
-                        <a href="#">Problem Type</a>
-                        <a href="#">Date Reported</a>
-                        <a href="#">Date Closed</a>
-                    </div>
-                </div>
-            <button type="button" onclick="alert('Stats Summary Clicked')">Stats Summary</button> 
-    </body>    
+</template>    
+
+<template name="tickets">
+    <table id="ticketTable" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Date Brought In</th>
+                <th>Problem</th>
+                <th>Estimated Cost</th>                   
+                <th>Status</th>
+                <th>Resolution</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- {{#each ticket}} -->
+        <tr>
+            <td>Arthur Flores</td>
+            <td>123 Oak Street</td>
+            <td>(888)123-1234</td>
+            <td>February 10, 2016</td>
+            <td>Broken Chain</td>
+            <td>$20</td>
+            <td>Open</td>
+            <td>New Chain</td>
+            <td>Chain is rusty and old</td>
+        </tr>
+        <!-- {{/each}} -->
+        </tbody>
+    </table>
+
+    <button type="button" onclick="alert('Add New Ticket Clicked')">Add New Ticket</button> 
+    <button type="button" onclick="alert('Export Data Clicked')">Export Data</button> 
+</template>
+                
+<template name="problems">
+    <table id="problemsTable" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Typical Problems</th>
+                <th># of Occurances</th>
+                <th>How to solve issue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {{#each problem }} -->
+            <tr>
+                <td>Broken Chain</td>
+                <td>1</td>
+                <td>
+                    <p>Step1: Remove Chain from Wheel.</p>
+                    <p>Step2: Put on new chain.</p>
+                </td>
+            </tr>
+            <!-- {{/each}} -->
+        </tbody>
+    </table>
+    <button type="button" onclick="" id="addProblem">Add Typical Problem</button>
+    <div class="dropdown" id="problemsDropdown">
+        <button class="dropbtn" id="problemsReport">Report</button>
+        <div class="dropdown-content" id="problemDDC" >
+            <a href="#">Date Opened</a>
+            <a href="#">Problem Type</a>
+            <a href="#">Date Reported</a>
+            <a href="#">Date Closed</a>
+        </div>
+    </div>
+    <button type="button" id="stats">Stats Summary</button> 
 </template>

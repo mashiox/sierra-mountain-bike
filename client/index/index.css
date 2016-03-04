@@ -1,5 +1,5 @@
 .body-container {
-    width: 500px;
+    /*width: 500px;*/
     padding: 5% 0 0;
     margin: auto;
 }
@@ -8,7 +8,7 @@
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: 500px;
+    /*max-width: 500px;*/
     margin: 0 auto 100px;
     padding: 15px;
     text-align: center;

@@ -2,3 +2,7 @@ table#vendorTable tbody tr {
     text-align: initial;
     cursor: pointer;
 }
+
+table#vendorTable tbody{
+    height: auto;
+}
