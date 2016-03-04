@@ -1,45 +1,52 @@
 <template name="inventory">
     <div class="body-container">
         <div class="item">
-        	<header>
-        		
-        	</header>
-        	<input type="text" size="10" maxlength="30">
-			<input type="Submit" value="Search">
-        	
-        </div> 
-       
-        	
-        <div>
-        	<table border="2" cellpadding="2" cellspacing="2" width="100%">
-				<tr>
-					<th bgcolor="lightblue" colspan="6">
-						<h3><b>Inventory</b></h3>
-					</th>
-				</tr>
-				<tr>
-					<td bgcolor="lightblue"><b>Item</b></td>
-					<td bgcolor="lightblue"><b>Condition</b></td>
-					<td bgcolor="lightblue"><b>Category</b></td>
-					<td bgcolor="lightblue"><b>On-Hand</b></td>
-					<td bgcolor="lightblue"><b>On-Order</b></td>
-					<td bgcolor="lightblue"><b>Actions</b></td>
-				</tr>
-				<tr>
-					<td>Row 2</td>
-					<td>Row 2</td>
-					<td>Row 2</td>
-					<td>Row 2</td>
-					<td>Row 2</td>
-					<td>
-						<select>
-							<option selected>Add</option>
-							<option>Delete</option>
-						</select>
-					</td>
-				</tr>
-			</table>
+            <h3>Inventory</h3>
+            <div class="col-lg-4">
+                <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-4 -->
+        	{{ > inventoryTable }}
         </div>
+    </div>
+        
+</template>
+       
+<template name="inventoryTable">
+    <div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Condition</th>
+                <th>Category</th>
+                <th>On-Hand</th>
+                <th>On-Order</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- {{ #each item }} -->
+            <tr>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>
+                    <select>
+                        <option selected>Add</option>
+                        <option>Delete</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- {{/each}} -->
+            </tbody>
+        </table>
     </div>
 
 </template>
