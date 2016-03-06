@@ -11,5 +11,12 @@ SMBC = {
         this._title = title;
         this._access = access;
     },
+    
+    /**
+     * Ticket Subsystem constructor
+     */
+    Ticket: function(){
+        // todo
+    },
 }
 
