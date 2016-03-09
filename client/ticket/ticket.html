@@ -37,22 +37,25 @@
         <tbody>
         <!-- {{#each ticket}} -->
         <tr>
-            <td>Arthur Flores</td>
+            <td contenteditable='true'>Arthur Flores</td>
             <td>123 Oak Street</td>
             <td>(888)123-1234</td>
             <td>February 10, 2016</td>
             <td>Broken Chain</td>
             <td>$20</td>
-            <td>Open</td>
+            <td><select id="status">
+                        <option selected>Open</option>
+                        <option>In-Progress</option>
+                        <option>Done</option>
+                </select></td>
             <td>New Chain</td>
             <td>Chain is rusty and old</td>
         </tr>
         <!-- {{/each}} -->
         </tbody>
     </table>
-
-    <button type="button" onclick="alert('Add New Ticket Clicked')">Add New Ticket</button> 
-    <button type="button" onclick="alert('Export Data Clicked')">Export Data</button> 
+    <button type="button" id="newticket">Insert New Ticket</button>
+    <button type="button" id="export">Export Data</button>
 </template>
                 
 <template name="problems">
