@@ -53,10 +53,13 @@ SMBC.Ticket.repairsPerDay = function(){
 SMBC.Ticket._toBuckets = function(tickets){
     var bucket = [];
     tickets.forEach(function(t){
-        var keyString =t.open.getDay()+"-"+t.open.getMonth()+"-"+t.open.getYear(); 
+        // Make a dd-mm-yy string
+        var keyString =t.open.getDay()+"-"+t.open.getMonth()+"-"+t.open.getYear();
+        // if the  key doesn't exist, initialize it.
         if ( bucket[ keyString ] === undefined ){
             bucket[ keyString ] = new Array();
         }
+        // if it does, just push it in.
         bucket[ keyString ].push(t);
     });
     return bucket;
@@ -66,6 +69,16 @@ SMBC.Ticket.averageRepairsPerDay = function(){
     var ticketsPD = this.repairsPerDay().sort();
     
     // Find the median
+    var medianIndex = ( ticketsPD.length % 2 === 0 ? ticketsPD.length/2 : (ticketsPD+1)/2 );
+    return ticketsPD[ medianIndex ];
+}
+
+SMBC.Ticket.averageRepairPerDayConstraint = function( lowerConstraint, upperConstraint = new Date() ){
+    var ticketsPD = this.repairsPerDay().filter(function( ticket ){
+        // Filter the tickets to be within the defined time constraint. 
+        return ticket.open <= lowerConstraint && ( ticket.close === -1 || ticket.close <= upperConstraint ); 
+    }).sort();
+    
     var medianIndex = ( ticketsPD.length % 2 === 0 ? ticketsPD.length/2 : (ticketsPD+1)/2 );
     return ticketsPD[ medianIndex ];
 }
