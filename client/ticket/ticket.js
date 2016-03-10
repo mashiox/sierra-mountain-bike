@@ -44,6 +44,19 @@ Template.tickets.events({
         var cell7 = row.insertCell(6);
         var cell8 = row.insertCell(7);
         var cell9 = row.insertCell(8);
+        //Insert cell data into database
+        Tickets.insert({
+           Name: "Enter Name",
+           Address: "Enter Address", 
+           Phone: "Enter Phone Number",
+           Date: "Enter Date Brought In",
+           Problem: "Enter Problem",
+           Cost: "Enter Estimated Cost",
+           Status: "Enter Status",
+           Resolution: "Enter Resolution",
+           Description: "Enter Description",
+        });
+        
         // Add some text to the new cells:
         cell1.innerHTML = "Enter Name";
         cell2.innerHTML = "Enter Address";
@@ -56,5 +69,19 @@ Template.tickets.events({
         cell9.innerHTML = "Enter Description";
         // Make content editable
         row.contentEditable = true;
+    }
+})
+
+Template.taskNotes.helpers({
+    optionsHelper: function(){
+        return {
+                textarea: true,
+                collection: "smbc_tickets",
+                field: "Name",
+                acceptEmpty: true,
+                placeholder: "Enter notes",
+                substitute: "Enter notes",
+                removeEmpty: false
+        };
     }
 })

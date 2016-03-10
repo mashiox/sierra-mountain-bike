@@ -1,6 +1,9 @@
 <template name="ticket">
     <div class="body-container">
         <div class="item">
+
+
+
             <h3>Repair Ticket Management System</h3>
             <nav id="ticketNavigation">
                 <ul class="pagination">
@@ -18,7 +21,8 @@
                     </span>
                 </div><!-- /input-group -->
             </div>
-            <div>
+           
+           <div>
                 <select required>
                     <option value="Name">Name</option>
                     <option value="Problem Type">Type</option>
@@ -40,6 +44,7 @@
     </div>
 </template>    
 
+
 <template name="tickets">
     <table id="ticketTable" class="table table-hover">
         <thead>
@@ -56,7 +61,6 @@
             </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
             <!-- {{#each ticket}} -->
             <tr>
                 <td>Arthur Flores</td>
@@ -70,7 +74,7 @@
                 <td>Chain is rusty and old</td>
             </tr>
             <!-- {{/each}} -->
-=======
+
         <!-- {{#each ticket}} -->
         <tr>
             <td contenteditable='true'>Arthur Flores</td>
@@ -88,7 +92,7 @@
             <td>Chain is rusty and old</td>
         </tr>
         <!-- {{/each}} -->
->>>>>>> 0f37ac69ac839271239eef1c73af3e7c9f41b6b1
+
         </tbody>
     </table>
     <button type="button" id="newticket">Insert New Ticket</button>
