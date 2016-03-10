@@ -1,13 +1,35 @@
 <template name="ticket">
     <div class="body-container">
         <div class="item">
-           <h3>Repair Ticket Management System</h3>
-           <nav id="ticketNavigation">
+            <h3>Repair Ticket Management System</h3>
+            <nav id="ticketNavigation">
                 <ul class="pagination">
                     <li id="Tickets"><a href="#">Repair Tickets</a></li>
                     <li id="Problems"><a href="#">Common Problems</a></li>
                 </ul>
-            </nav>
+            </nav><br>
+
+            <div class="col-lg-3">
+                
+                <div class="input-group"> 
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+            <div>
+                <select required>
+                    <option value="Name">Name</option>
+                    <option value="Problem Type">Type</option>
+                    <option value="Problem Status">Status</option> 
+                    <option value="Date Reported">Reported</option>
+                    <option value="Date Resolved">Resolved</option>
+                    <option value="Component">Component</option>
+
+                </select><br>
+            </div>
+
             <div class="tableTickets" id="displayTable">
                 {{ > tickets }}
             </div>
@@ -16,7 +38,6 @@
             </div>
         </div> 
     </div>
-
 </template>    
 
 <template name="tickets">
@@ -35,26 +56,26 @@
             </tr>
         </thead>
         <tbody>
-        <!-- {{#each ticket}} -->
-        <tr>
-            <td>Arthur Flores</td>
-            <td>123 Oak Street</td>
-            <td>(888)123-1234</td>
-            <td>February 10, 2016</td>
-            <td>Broken Chain</td>
-            <td>$20</td>
-            <td>Open</td>
-            <td>New Chain</td>
-            <td>Chain is rusty and old</td>
-        </tr>
-        <!-- {{/each}} -->
+            <!-- {{#each ticket}} -->
+            <tr>
+                <td>Arthur Flores</td>
+                <td>123 Oak Street</td>
+                <td>(888)123-1234</td>
+                <td>February 10, 2016</td>
+                <td>Broken Chain</td>
+                <td>$20</td>
+                <td>Open</td>
+                <td>New Chain</td>
+                <td>Chain is rusty and old</td>
+            </tr>
+            <!-- {{/each}} -->
         </tbody>
     </table>
 
     <button type="button" onclick="alert('Add New Ticket Clicked')">Add New Ticket</button> 
     <button type="button" onclick="alert('Export Data Clicked')">Export Data</button> 
 </template>
-                
+
 <template name="problems">
     <table id="problemsTable" class="table table-hover">
         <thead>
