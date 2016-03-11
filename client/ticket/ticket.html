@@ -2,8 +2,6 @@
     <div class="body-container">
         <div class="item">
 
-
-
             <h3>Repair Ticket Management System</h3>
             <nav id="ticketNavigation">
                 <ul class="pagination">
@@ -11,28 +9,6 @@
                     <li id="Problems"><a href="#">Common Problems</a></li>
                 </ul>
             </nav><br>
-
-            <div class="col-lg-3">
-
-                <div class="input-group"> 
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
-
-            <div>
-                <select required>
-                    <option value="Name">Name</option>
-                    <option value="Problem Type">Type</option>
-                    <option value="Problem Status">Status</option> 
-                    <option value="Date Reported">Reported</option>
-                    <option value="Date Resolved">Resolved</option>
-                    <option value="Component">Component</option>
-
-                </select><br>
-            </div>
 
             <div class="tableTickets" id="displayTable">
                 {{> tickets}}
@@ -46,37 +22,10 @@
 
 
 <template name="tickets">
-    <table id="ticketTable" class="table table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th>Date Brought In</th>
-                <th>Problem</th>
-                <th>Estimated Cost</th>                   
-                <th>Status</th>
-                <th>Resolution</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        
-        <tbody>
-            {{#each all_tickets}}
-            <tr>
-                <td>{{Name}}</td>
-                <td>{{Address}}</td>
-                <td>{{Phone}}</td>
-                <td>{{Date}}</td>
-                <td>{{Problem}}</td>
-                <td>{{Cost}}</td>
-                <td>{{Status}}</td>
-                <td>{{Resolution}}</td>
-                <td>{{Description}}</td>
-            </tr>
-            {{/each}}
-            <tr>
-                <!--<form id="newRecord"> -->
+    {{> reactiveTable settings=settings }}
+        <table>  
+            <tbody>
+                <tr>
                     <td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
                     <td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
                     <td><input id="phone" type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
@@ -86,10 +35,8 @@
                     <td><input id="status" type="text" class="form-control" placeholder="Enter  Status"></td>
                     <td><input id="resolution" type="text" class="form-control" placeholder="Enter Resolution"></td>
                     <td><input id="description" type="text" class="form-control" placeholder="Enter Description"></td>
-                <!--</form>-->
             </tr>
         </tbody>
-        
     </table>
 
 

@@ -2,6 +2,14 @@ Template.tickets.helpers({
     all_tickets: function() {
             return Tickets.find({}, {sort: {Date: -1}});
         
+    },
+    settings: function() {
+        return {
+            collection: Tickets,
+            rowsPerPage: 10,
+            showFilter: true,
+            fields: []
+        }
     }
 })
 
