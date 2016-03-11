@@ -13,7 +13,7 @@
             </nav><br>
 
             <div class="col-lg-3">
-                
+
                 <div class="input-group"> 
                     <input type="text" class="form-control" placeholder="Search for...">
                     <span class="input-group-btn">
@@ -21,8 +21,8 @@
                     </span>
                 </div><!-- /input-group -->
             </div>
-           
-           <div>
+
+            <div>
                 <select required>
                     <option value="Name">Name</option>
                     <option value="Problem Type">Type</option>
@@ -35,7 +35,7 @@
             </div>
 
             <div class="tableTickets" id="displayTable">
-                {{ > tickets }}
+                {{> tickets}}
             </div>
             <div class="tableProblems" id="displayTable" style="display:none;">
                 {{ > problems }}
@@ -60,41 +60,37 @@
                 <th>Description</th>
             </tr>
         </thead>
+        
         <tbody>
-            <!-- {{#each ticket}} -->
+            {{#each all_tickets}}
             <tr>
-                <td>Arthur Flores</td>
-                <td>123 Oak Street</td>
-                <td>(888)123-1234</td>
-                <td>February 10, 2016</td>
-                <td>Broken Chain</td>
-                <td>$20</td>
-                <td>Open</td>
-                <td>New Chain</td>
-                <td>Chain is rusty and old</td>
+                <td>{{Name}}</td>
+                <td>{{Address}}</td>
+                <td>{{Phone}}</td>
+                <td>{{Date}}</td>
+                <td>{{Problem}}</td>
+                <td>{{Cost}}</td>
+                <td>{{Status}}</td>
+                <td>{{Resolution}}</td>
+                <td>{{Description}}</td>
             </tr>
-            <!-- {{/each}} -->
-
-        <!-- {{#each ticket}} -->
-        <tr>
-            <td contenteditable='true'>Arthur Flores</td>
-            <td>123 Oak Street</td>
-            <td>(888)123-1234</td>
-            <td>February 10, 2016</td>
-            <td>Broken Chain</td>
-            <td>$20</td>
-            <td><select id="status">
-                        <option selected>Open</option>
-                        <option>In-Progress</option>
-                        <option>Done</option>
-                </select></td>
-            <td>New Chain</td>
-            <td>Chain is rusty and old</td>
-        </tr>
-        <!-- {{/each}} -->
-
+            {{/each}}
+            <tr>
+                <td><input type="text" class="form-control" placeholder="Enter Name"></td>
+                <td><input type="text" class="form-control" placeholder="Enter Address"></td>
+                <td><input type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
+                <td></td>
+                <td><input type="text" class="form-control" placeholder="Enter Problem"></td>
+                <td><input type="text" class="form-control" placeholder="Enter Cost"></td>
+                <td><input type="text" class="form-control" placeholder="Enter  Status"></td>
+                <td><input type="text" class="form-control" placeholder="Enter Resolution"></td>
+                <td><input type="text" class="form-control" placeholder="Enter Description"></td>
+            </tr>
         </tbody>
+        
     </table>
+
+
     <button type="button" id="newticket">Insert New Ticket</button>
     <button type="button" id="export">Export Data</button>
 </template>

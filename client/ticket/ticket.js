@@ -1,5 +1,8 @@
-Template.ticket.helpers({
-    
+Template.tickets.helpers({
+    all_tickets: function() {
+            return Tickets.find({}, {sort: {Date: -1}});
+        
+    }
 })
 
 Template.ticket.events({
@@ -7,6 +10,13 @@ Template.ticket.events({
         event.preventDefault();
         $("div#displayTable").hide();
         $("div.table"+event.currentTarget.id).show();
+    },
+    'submit .new-search': function(event) {
+        events.preventDefault();
+        // var "search" = event.target.search.value;
+
+        // Clear form
+      event.target.text.value = "";
     }
 })
 
@@ -35,7 +45,7 @@ Template.tickets.events({
         // Create an empty <tr> element and add it to the 1st position of the table:
         var row = table.insertRow();
         // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-        var cell1 = row.insertCell(0);
+        var "name" = events.target.name.value;
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
@@ -45,20 +55,21 @@ Template.tickets.events({
         var cell8 = row.insertCell(7);
         var cell9 = row.insertCell(8);
         //Insert cell data into database
-        Tickets.insert({
-           Name: "Enter Name",
-           Address: "Enter Address", 
-           Phone: "Enter Phone Number",
-           Date: "Enter Date Brought In",
-           Problem: "Enter Problem",
-           Cost: "Enter Estimated Cost",
-           Status: "Enter Status",
-           Resolution: "Enter Resolution",
-           Description: "Enter Description",
-        });
+        // Tickets.insert({
+        //    Name: name,
+        //    Address: "Enter Address", 
+        //    Phone: "Enter Phone Number",
+        //    Date: "Enter Date Brought In",
+        //    Problem: "Enter Problem",
+        //    Cost: "Enter Estimated Cost",
+        //    Status: "Enter Status",
+        //    Resolution: "Enter Resolution",
+        //    Description: "Enter Description",
+        // });
         
         // Add some text to the new cells:
-        cell1.innerHTML = "Enter Name";
+        
+        cell1.innerText = "Enter Name";
         cell2.innerHTML = "Enter Address";
         cell3.innerHTML = "Enter Phone Number";
         cell4.innerHTML = "Enter Date Brought In";
@@ -71,6 +82,7 @@ Template.tickets.events({
         row.contentEditable = true;
     }
 })
+
 
 Template.taskNotes.helpers({
     optionsHelper: function(){
