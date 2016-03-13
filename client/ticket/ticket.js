@@ -65,6 +65,7 @@ Template.tickets.events({
         //checks if any fields are left empty then it wont insert into table
         if(name== ""||address== ""||phone== ""||problem== ""||cost== ""||status== ""||resolution== ""||description== ""){
             validEntry=false;
+            alert("Please fill out all fields in the table.");
         }
 
         //Insert cell data into database
@@ -80,16 +81,17 @@ Template.tickets.events({
                 Resolution: resolution,
                 Description: description,
             });
+
+            //Clear out data in form
+            $("input#name").val("");
+            $("input#address").val("");
+            $("input#phone").val("");
+
+            $("input#problem").val("");
+            $("input#cost").val("");
+            $("input#status").val("");
+            $("input#resolution").val("");
+            $("input#description").val("");
         }
-         //Clear out data in form
-        $("input#name").val("");
-        $("input#address").val("");
-        $("input#phone").val("");
-        
-        $("input#problem").val("");
-        $("input#cost").val("");
-        $("input#status").val("");
-        $("input#resolution").val("");
-        $("input#description").val("");
     }
 })
