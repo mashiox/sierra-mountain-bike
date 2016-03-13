@@ -47,6 +47,9 @@ Template.tickets.events({
     },
     
     'click button#newticket': function(event){
+        // Variable to check for valid entry
+        var validEntry = true;
+        
         event.preventDefault();
         // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
         var name = $("input#name").val();
@@ -59,18 +62,25 @@ Template.tickets.events({
         var resolution = $("input#resolution").val();
         var description = $("input#description").val();
         
+        //checks if any fields are left empty then it wont insert into table
+        if(name== ""||address== ""||phone== ""||problem== ""||cost== ""||status== ""||resolution== ""||description== ""){
+            validEntry=false;
+        }
+
         //Insert cell data into database
-         Tickets.insert({
-            Name: name,
-            Address: address, 
-            Phone: phone,
-            Date: new Date().toString(),
-            Problem: problem,
-            Cost: cost,
-            Status: status,
-            Resolution: resolution,
-            Description: description,
-         });
+        if (validEntry) {
+            Tickets.insert({
+                Name: name,
+                Address: address,
+                Phone: phone,
+                Date: new Date().toString(),
+                Problem: problem,
+                Cost: cost,
+                Status: status,
+                Resolution: resolution,
+                Description: description,
+            });
+        }
          //Clear out data in form
         $("input#name").val("");
         $("input#address").val("");
@@ -83,4 +93,3 @@ Template.tickets.events({
         $("input#description").val("");
     }
 })
-
