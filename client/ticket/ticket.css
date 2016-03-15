@@ -16,6 +16,10 @@ table.problemsTable tbody{
     overflow: auto;
 }
 
+textarea {
+    resize: none;
+}
+
 /* Style The Dropdown Button */
 
 #problemsReport.dropbtn {
@@ -67,4 +71,17 @@ table.problemsTable tbody{
 
 #ticketNavigation{
     float: left;
+}
+
+.divDialog {
+	position:absolute;
+	width:auto;
+	height:auto;
+	z-index:1;
+	left: 250px;
+	top: 100px;
+	background-color: #A5D187;
+	border: 1px solid #666;
+	padding: 20px;
+	visibility: collapse;
 }

@@ -36,7 +36,30 @@ Template.problems.events({
     
     'click button#addProblem': function(event){
         event.preventDefault();
-        alert('Add Typical Problem Clicked');
+		var elem = document.getElementById('addProblemDialog');
+		elem.style.visibility='visible';
+    },
+	
+	'click button#finishedAddProblem': function(event){
+        event.preventDefault();
+		
+		var title = $("input#newProblemTitle").val();
+		var reslution = document.getElementById('newProblemResolution').value;
+		
+        if(title== ""||reslution== ""){
+            validEntry=false;
+            alert("Please fill out all fields.");
+        }
+    },
+	
+	'click button#cancelAddProblem': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('addProblemDialog');
+		elem.style.visibility='collapse';
+		
+		//Clear out data in form
+		$("input#newProblemTitle").val("");
+		document.getElementById('newProblemResolution').value = "";
     }
 })
 

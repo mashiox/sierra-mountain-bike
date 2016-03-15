@@ -1,7 +1,6 @@
 <template name="ticket">
     <div class="body-container">
         <div class="item">
-
             <h3>Repair Ticket Management System</h3>
             <nav id="ticketNavigation">
                 <ul class="pagination">
@@ -9,7 +8,6 @@
                     <li id="Problems"><a href="#">Common Problems</a></li>
                 </ul>
             </nav><br>
-
             <div class="tableTickets" id="displayTable">
                 {{> tickets}}
             </div>
@@ -19,7 +17,6 @@
         </div> 
     </div>
 </template>    
-
 
 <template name="tickets">
     {{> reactiveTable settings=settings }}
@@ -38,7 +35,6 @@
             </tr>
         </tbody>
     </table>
-
 
     <button type="button" id="newticket">Insert New Ticket</button>
     <button type="button" id="export">Export Data</button>
@@ -76,5 +72,18 @@
             <a href="#">Date Closed</a>
         </div>
     </div>
-    <button type="button" id="stats">Stats Summary</button> 
+    <button type="button" id="stats">Stats Summary</button>
+	
+	<div id="addProblemDialog" class="divDialog">
+		<p>
+			<input type="text" id="newProblemTitle" class="form-control" placeholder="Problem" />
+		</p>
+		<p>
+			<textarea id="newProblemResolution" style="width: 600px; height: 400px;" class="form-control" placeholder="Resolution"></textarea>
+		</p>
+		<p>
+			<button type="button" id="finishedAddProblem">Finished</button>
+			<button type="button" id="cancelAddProblem">Cancel</button>
+		</p>
+	</div>
 </template>
