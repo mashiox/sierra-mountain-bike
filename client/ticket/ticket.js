@@ -19,6 +19,7 @@ Template.ticket.events({
         $("div#displayTable").hide();
         $("div.table"+event.currentTarget.id).show();
     },
+	
     'submit .new-search': function(event) {
         events.preventDefault();
         // var "search" = event.target.search.value;
@@ -29,22 +30,28 @@ Template.ticket.events({
 })
 
 Template.problems.events({
+	'dblclick tr': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editProblemDialog');
+		elem.style.visibility='visible';
+    },
+	
     'click button#stats': function(event){
         event.preventDefault();
         alert("Stats Summary Clicked");
     },
     
-    'click button#addProblem': function(event){
+    'click button#btnAddProblem': function(event){
         event.preventDefault();
-		var elem = document.getElementById('addProblemDialog');
+		var elem = document.getElementById('editProblemDialog');
 		elem.style.visibility='visible';
     },
 	
-	'click button#finishedAddProblem': function(event){
+	'click button#btnSaveProblemEdit': function(event){
         event.preventDefault();
 		
-		var title = $("input#newProblemTitle").val();
-		var reslution = document.getElementById('newProblemResolution').value;
+		var title = $("input#textEditProblemTitle").val();
+		var reslution = document.getElementById('textEditProblemResolution').value;
 		
         if(title== ""||reslution== ""){
             validEntry=false;
@@ -52,19 +59,49 @@ Template.problems.events({
         }
     },
 	
-	'click button#cancelAddProblem': function(event){
+	'click button#btnCancelProblemEdit': function(event){
         event.preventDefault();
-		var elem = document.getElementById('addProblemDialog');
+		var elem = document.getElementById('editProblemDialog');
 		elem.style.visibility='collapse';
 		
 		//Clear out data in form
-		$("input#newProblemTitle").val("");
-		document.getElementById('newProblemResolution').value = "";
+		$("input#textEditProblemTitle").val("");
+		document.getElementById('textEditProblemResolution').value = "";
     }
 })
 
 Template.tickets.events({
-    'click button#export': function(event){
+    'dblclick tr': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editTicketDialog');
+		elem.style.visibility='visible';
+    },
+		
+    'click button#btnNewCustomer': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editCustomerDialog');
+		elem.style.visibility='visible';
+    },
+    	
+	'click button#btnCancelCustomerEdit': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editCustomerDialog');
+		elem.style.visibility='collapse';
+    },
+		
+    'click button#btnNewTicket': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editTicketDialog');
+		elem.style.visibility='visible';
+    },
+	
+	'click button#btnCancelTicketEdit': function(event){
+        event.preventDefault();
+		var elem = document.getElementById('editTicketDialog');
+		elem.style.visibility='collapse';
+    },
+		
+	'click button#export': function(event){
         event.preventDefault();
         alert("Export Button Clicked");
     },

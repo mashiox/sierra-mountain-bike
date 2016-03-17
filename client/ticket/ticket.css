@@ -77,10 +77,11 @@ textarea {
 	position:absolute;
 	width:auto;
 	height:auto;
-	z-index:1;
-	left: 250px;
+	z-index:1000;
+	left: 280px;
 	top: 100px;
-	background-color: #A5D187;
+	border-radius: 15px;
+	background-color: #6FB34A;
 	border: 1px solid #666;
 	padding: 20px;
 	visibility: collapse;

@@ -20,24 +20,80 @@
 
 <template name="tickets">
     {{> reactiveTable settings=settings }}
-        <table>  
-            <tbody>
-                <tr>
-                    <td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
-                    <td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
-                    <td><input id="phone" type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
-                    <td></td>
-                    <td><input id="problem" type="text" class="form-control" placeholder="Enter Problem"></td>
-                    <td><input id="cost" type="text" class="form-control" placeholder="Enter Cost"></td>
-                    <td><input id="status" type="text" class="form-control" placeholder="Enter  Status"></td>
-                    <td><input id="resolution" type="text" class="form-control" placeholder="Enter Resolution"></td>
-                    <td><input id="description" type="text" class="form-control" placeholder="Enter Description"></td>
+	<table>  
+		<tbody>
+			<tr>
+				<td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
+				<td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
+				<td><input id="phone" type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
+				<td></td>
+				<td><input id="problem" type="text" class="form-control" placeholder="Enter Problem"></td>
+				<td><input id="cost" type="text" class="form-control" placeholder="Enter Cost"></td>
+				<td><input id="status" type="text" class="form-control" placeholder="Enter  Status"></td>
+				<td><input id="resolution" type="text" class="form-control" placeholder="Enter Resolution"></td>
+				<td><input id="description" type="text" class="form-control" placeholder="Enter Description"></td>
             </tr>
         </tbody>
     </table>
-
+	
+	<p>&nbsp;</p>
+	
+	<button type="button" id="btnNewCustomer">New Customer</button>
+	<button type="button" id="btnNewTicket">New Ticket</button>
     <button type="button" id="newticket">Insert New Ticket</button>
     <button type="button" id="export">Export Data</button>
+	
+	<div id="editCustomerDialog" class="divDialog">
+		<p>
+			<input type="text" id="textCustomerName" class="form-control" placeholder="Name" />
+		</p>
+		<p>
+			<input type="text" id="textCustomerName" class="form-control" placeholder="Phone Number" />
+		</p>
+		<p>
+			<textarea id="textCustomerAddress" style="width: 400px; height: 200px;" class="form-control" placeholder="Address"></textarea>
+		</p>
+		<p>
+			<button type="button" id="btnSaveCustomerEdit">Save</button>
+			<button type="button" id="btnCancelCustomerEdit">Cancel</button>
+		</p>
+	</div>
+	
+	<div id="editTicketDialog" class="divDialog">
+		<p>
+			<select id="selectTicketCustomer" class="form-control">
+				<option disabled selected hidden>Select Customer</option>
+				<option>A</option>
+				<option>B</option>
+				<option>C</option>
+			</select>
+		</p>
+		<p>
+			<select id="selectTicketProblem" class="form-control">
+				<option disabled selected hidden>Select Problem</option>
+				<option>X</option>
+				<option>Y</option>
+				<option>Z</option>
+			</select>
+		</p>
+		<p>
+			<select id="selectTicketStatus" class="form-control">
+				<option>Open</option>
+				<option>Being Worked</option>
+				<option>Closed</option>
+			</select>
+		</p>
+		<p>
+			<input type="text" id="textTicketCost" class="form-control" placeholder="Estimated Cost" />
+		</p>
+		<p>
+			<textarea id="textTicketDescription" style="width: 400px; height: 200px;" class="form-control" placeholder="Description"></textarea>
+		</p>
+		<p>
+			<button type="button" id="btnSaveTicketEdit">Save</button>
+			<button type="button" id="btnCancelTicketEdit">Cancel</button>
+		</p>
+	</div>
 </template>
 
 <template name="problems">
@@ -62,7 +118,7 @@
             <!-- {{/each}} -->
         </tbody>
     </table>
-    <button type="button" onclick="" id="addProblem">Add Typical Problem</button>
+    <button type="button" id="btnAddProblem">Add Typical Problem</button>
     <div class="dropdown" id="problemsDropdown">
         <button class="dropbtn" id="problemsReport">Report</button>
         <div class="dropdown-content" id="problemDDC" >
@@ -74,16 +130,16 @@
     </div>
     <button type="button" id="stats">Stats Summary</button>
 	
-	<div id="addProblemDialog" class="divDialog">
+	<div id="editProblemDialog" class="divDialog">
 		<p>
-			<input type="text" id="newProblemTitle" class="form-control" placeholder="Problem" />
+			<input type="text" id="textEditProblemTitle" class="form-control" placeholder="Problem" />
 		</p>
 		<p>
-			<textarea id="newProblemResolution" style="width: 600px; height: 400px;" class="form-control" placeholder="Resolution"></textarea>
+			<textarea id="textEditProblemResolution" style="width: 600px; height: 400px;" class="form-control" placeholder="Resolution"></textarea>
 		</p>
 		<p>
-			<button type="button" id="finishedAddProblem">Finished</button>
-			<button type="button" id="cancelAddProblem">Cancel</button>
+			<button type="button" id="btnSaveProblemEdit">Save</button>
+			<button type="button" id="btnCancelProblemEdit">Cancel</button>
 		</p>
 	</div>
 </template>
