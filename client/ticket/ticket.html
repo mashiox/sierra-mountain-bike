@@ -1,26 +1,32 @@
 <template name="ticket">
-    <div class="body-container">
-        <div class="item">
-            <h3>Repair Ticket Management System</h3>
-            <nav id="ticketNavigation">
-                <ul class="pagination">
-                    <li id="Tickets"><a href="#">Repair Tickets</a></li>
-                    <li id="Problems"><a href="#">Common Problems</a></li>
-                </ul>
-            </nav><br>
-            <div class="tableTickets" id="displayTable">
-                {{> tickets}}
-            </div>
-            <div class="tableProblems" id="displayTable" style="display:none;">
-                {{ > problems }}
-            </div>
-        </div> 
-    </div>
-</template>    
+	<div class="body-container">
+		<div class="item">
+			<h3>Repair Ticket Management System</h3>
+			<nav id="ticketNavigation">
+				<ul class="pagination">
+					<li id="Tickets"><a href="#">Repair Tickets</a></li>
+					<li id="Customers"><a href="#">Customers</a></li>
+					<li id="Problems"><a href="#">Common Problems</a></li>
+				</ul>
+			</nav><br>
+			<div class="tableTickets" id="displayTable">
+				{{> tickets}}
+			</div>
+			<div class="tableCustomers" id="displayTable" style="display:none;">
+				{{> customers}}
+			</div>
+			<div class="tableProblems" id="displayTable" style="display:none;">
+				{{ > problems }}
+			</div>
+		</div>
+	</div>
+</template>
 
 <template name="tickets">
-    {{> reactiveTable settings=settings }}
-	<table>  
+	{{> reactiveTable settings=all_tickets }}
+	<p>&nbsp;</p>
+
+	<table>
 		<tbody>
 			<tr>
 				<td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
@@ -32,34 +38,17 @@
 				<td><input id="status" type="text" class="form-control" placeholder="Enter  Status"></td>
 				<td><input id="resolution" type="text" class="form-control" placeholder="Enter Resolution"></td>
 				<td><input id="description" type="text" class="form-control" placeholder="Enter Description"></td>
-            </tr>
-        </tbody>
-    </table>
-	
+			</tr>
+		</tbody>
+	</table>
+
 	<p>&nbsp;</p>
-	
-	<button type="button" id="btnNewCustomer">New Customer</button>
-	<button type="button" id="btnNewTicket">New Ticket</button>
-    <button type="button" id="newticket">Insert New Ticket</button>
-    <button type="button" id="export">Export Data</button>
-	
-	<div id="editCustomerDialog" class="divDialog">
-		<p>
-			<input type="text" id="textCustomerName" class="form-control" placeholder="Name" />
-		</p>
-		<p>
-			<input type="text" id="textCustomerName" class="form-control" placeholder="Phone Number" />
-		</p>
-		<p>
-			<textarea id="textCustomerAddress" style="width: 400px; height: 200px;" class="form-control" placeholder="Address"></textarea>
-		</p>
-		<p>
-			<button type="button" id="btnSaveCustomerEdit">Save</button>
-			<button type="button" id="btnCancelCustomerEdit">Cancel</button>
-		</p>
-	</div>
-	
-	<div id="editTicketDialog" class="divDialog">
+
+	<button type="button" class="btn btn-default" id="btnNewTicket">New Ticket</button>
+	<button type="button" class="btn btn-default" id="newticket">Insert New Ticket</button>
+	<button type="button" class="btn btn-default" id="export">Export Data</button>
+
+	<div id="editTicketDialog" class="Dialog">
 		<p>
 			<select id="selectTicketCustomer" class="form-control">
 				<option disabled selected hidden>Select Customer</option>
@@ -90,47 +79,61 @@
 			<textarea id="textTicketDescription" style="width: 400px; height: 200px;" class="form-control" placeholder="Description"></textarea>
 		</p>
 		<p>
-			<button type="button" id="btnSaveTicketEdit">Save</button>
-			<button type="button" id="btnCancelTicketEdit">Cancel</button>
+			<button type="button" class="btn btn-default" id="btnSaveTicketEdit">Save</button>
+			<button type="button" class="btn btn-default" id="btnCancelTicketEdit">Cancel</button>
+		</p>
+	</div>
+</template>
+
+<template name="customers">
+	<p>&nbsp;</p>
+	{{> reactiveTable settings=all_customers }}
+	<p>&nbsp;</p>
+
+	<button type="button" class="btn btn-default" id="btnNewCustomer">New Customer</button>
+
+
+	<div id="editCustomerDialog" class="Dialog">
+		<p>
+			<input type="text" id="textCustomerName" class="form-control" placeholder="Name" />
+		</p>
+		<p>
+			<input type="text" id="textCustomerPhone" class="form-control" placeholder="Phone Number" />
+		</p>
+		<p>
+			<textarea id="textCustomerAddress" style="width: 400px; height: 200px;" class="form-control" placeholder="Address"></textarea>
+		</p>
+		<p>
+			<button type="button" class="btn btn-default" id="btnSaveCustomerEdit">Save</button>
+			<button type="button" class="btn btn-default" id="btnCancelCustomerEdit">Close</button>
 		</p>
 	</div>
 </template>
 
 <template name="problems">
-    <table id="problemsTable" class="table table-hover">
-        <thead>
-            <tr>
-                <th>Typical Problems</th>
-                <th># of Occurances</th>
-                <th>How to solve issue</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- {{#each problem }} -->
-            <tr>
-                <td>Broken Chain</td>
-                <td>1</td>
-                <td>
-                    <p>Step1: Remove Chain from Wheel.</p>
-                    <p>Step2: Put on new chain.</p>
-                </td>
-            </tr>
-            <!-- {{/each}} -->
-        </tbody>
-    </table>
-    <button type="button" id="btnAddProblem">Add Typical Problem</button>
-    <div class="dropdown" id="problemsDropdown">
-        <button class="dropbtn" id="problemsReport">Report</button>
-        <div class="dropdown-content" id="problemDDC" >
-            <a href="#">Date Opened</a>
-            <a href="#">Problem Type</a>
-            <a href="#">Date Reported</a>
-            <a href="#">Date Closed</a>
-        </div>
-    </div>
-    <button type="button" id="stats">Stats Summary</button>
-	
-	<div id="editProblemDialog" class="divDialog">
+	<p>&nbsp;</p>
+	{{> reactiveTable settings=all_problems }}
+	<p>&nbsp;</p>
+
+	<button type="button" class="btn btn-default" id="btnAddProblem">Add Typical Problem</button>
+
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Generate Report
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="#">Date Opened</a></li>
+			<li><a href="#">Problem Type</a></li>
+			<li><a href="#">Date Reported</a></li>
+			<li><a href="#">Date Closed</a></li>
+		</ul>
+	</div>
+
+	<button type="button" class="btn btn-default" id="stats">Stats Summary</button>
+
+
+	<div id="editProblemDialog" class="Dialog">
 		<p>
 			<input type="text" id="textEditProblemTitle" class="form-control" placeholder="Problem" />
 		</p>
@@ -138,8 +141,8 @@
 			<textarea id="textEditProblemResolution" style="width: 600px; height: 400px;" class="form-control" placeholder="Resolution"></textarea>
 		</p>
 		<p>
-			<button type="button" id="btnSaveProblemEdit">Save</button>
-			<button type="button" id="btnCancelProblemEdit">Cancel</button>
+			<button type="button" class="btn btn-default" id="btnSaveProblemEdit">Save</button>
+			<button type="button" class="btn btn-default" id="btnCancelProblemEdit">Cancel</button>
 		</p>
 	</div>
 </template>
