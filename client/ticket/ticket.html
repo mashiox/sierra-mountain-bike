@@ -29,7 +29,9 @@
 	<table>
 		<tbody>
 			<tr>
-				<td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
+				<td>
+                    {{> inputAutocomplete settings=AC_Settings class="form-control" placeholder="Enter Name" id="name" }}
+                </td>
 				<td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
 				<td><input id="phone" type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
 				<td></td>
@@ -83,6 +85,12 @@
 			<button type="button" class="btn btn-default" id="btnCancelTicketEdit">Cancel</button>
 		</p>
 	</div>
+</template>
+
+<template name="tickets_customerPill">
+    <p><span class="glyphicon glyphicon-user"> {{Name}}</span></p>
+    <p><span class="glyphicon glyphicon-earphone"> {{Phone}}</span></p>
+    <p><span class="glyphicon glyphicon-home"> {{Address}}</span></p>
 </template>
 
 <template name="customers">

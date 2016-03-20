@@ -17,12 +17,49 @@ Template.tickets.helpers({
 			collection: Tickets,
 			rowsPerPage: 5,
 			showFilter: true,
-			fields: ["Name", "Date", "Problem", "Status"]
+			fields: [
+                {
+                    // This beautifully allows the database to be second order.
+                    key: "CustomerId",
+                    label: "Name",
+                    fn: function(value, object, key){
+                        return getCustomerName(value);
+                    }
+                },
+                {
+                    key: "Date",
+                    label: "Ticked Opened",
+                    fn: function(value, object, key){
+                        return value.toLocaleFormat();
+                    }
+                },
+                "Problem", "Status"
+            ]
 		}
-	}
+	},
+    
+    AC_Settings: function(){
+        return {
+            position: "top",
+            limit: 5,
+            rules: [
+                {
+                    collection: Customers,
+                    field: "Name",
+                    template: Template.tickets_customerPill
+                }
+            ]
+        };
+    }
 })
 
 Template.tickets.events({
+    'autocompleteselect input#name': function(event, template, doc){
+        $("input#address").val(doc.Address);
+        $("input#phone").val(doc.Phone);
+        $("input#problem").focus();
+    },
+    
 	'dblclick tr': function (event) {
 		event.preventDefault();
 		var elem = document.getElementById('editTicketDialog');
@@ -67,14 +104,23 @@ Template.tickets.events({
 			validEntry = false;
 			alert("Please fill out all fields in the table.");
 		}
-
 		//Insert cell data into database
 		if (validEntry) {
+            
+            // TODO: Replace with Upsert
+            var custData = {
+                Name: name,
+                Phone: phone,
+                Address: address
+            };
+            var customer = Customers.findOne(custData);
+            if (!customer){
+                customer = Customers.insert(custData)
+            }
 			Tickets.insert({
-				Name: name,
-				Address: address,
-				Phone: phone,
-				Date: new Date().toString(),
+				CustomerId: customer._id || customer,
+				Date: new Date(),
+                CloseDate: -1,
 				Problem: problem,
 				Cost: cost,
 				Status: status,
@@ -191,3 +237,7 @@ Template.problems.events({
 		document.getElementById('textEditProblemResolution').value = "";
 	}
 })
+
+var getCustomerName = function(customerId){
+    return Customers.findOne({_id: customerId}).Name;
+}
