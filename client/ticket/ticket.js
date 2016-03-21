@@ -23,7 +23,7 @@ Template.tickets.helpers({
                     key: "CustomerId",
                     label: "Name",
                     fn: function(value, object, key){
-                        return getCustomerName(value);
+                        return Customers.findOne({_id: value}).Name;
                     }
                 },
                 {
@@ -33,12 +33,25 @@ Template.tickets.helpers({
                         return value.toLocaleFormat();
                     }
                 },
-                "Problem", "Status"
+                {
+                    key: "Problem",
+                    label: "Problem",
+                    fn: function(value, object, key){
+                        return CommonProblems.findOne({_id: value}).Description;
+                    }
+                },
+                {
+                    key: "CloseDate",
+                    label: "Status",
+                    fn: function(value, object, key){
+                        return value === -1 ? "Open" : "Closed";
+                    }
+                }
             ]
 		}
 	},
     
-    AC_Settings: function(){
+    AC_Settings_Customers: function(){
         return {
             position: "top",
             limit: 5,
@@ -50,11 +63,32 @@ Template.tickets.helpers({
                 }
             ]
         };
+    },
+    
+    AC_Settings_Problems: function(){
+        return {
+            position: "top",
+            limit: 5,
+            rules: [
+                {
+                    collection: CommonProblems,
+                    field: "Description",
+                    template: Template.tickets_problemsPill
+                }
+            ]
+        };
     }
 })
 
 Template.tickets.events({
+    'autocompleteselect input#problem': function(event, template, doc){
+        Session.set("problemId", doc._id);
+        $("input#resolution").val(doc.Troubleshooting);
+        $("input#cost").val(doc.Cost);
+    },
+    
     'autocompleteselect input#name': function(event, template, doc){
+        Session.set("customerId", doc._id);
         $("input#address").val(doc.Address);
         $("input#phone").val(doc.Phone);
         $("input#problem").focus();
@@ -117,14 +151,25 @@ Template.tickets.events({
             if (!customer){
                 customer = Customers.insert(custData)
             }
+            
+            var problemData = {
+                /* Cost not included, so that querying problems is indep of cost*/
+                Description: problem,
+                Troubleshooting: resolution
+            }
+            var problemD = CommonProblems.findOne(problemData);
+            if (!problemD){
+                problemData.Cost = cost; // if it dne, then make it the suggested cost.
+                problemD = CommonProblems.insert(problemData);
+            }
+            
 			Tickets.insert({
 				CustomerId: customer._id || customer,
 				Date: new Date(),
                 CloseDate: -1,
-				Problem: problem,
+				Problem: problemD._id || problemD,
 				Cost: cost,
 				Status: status,
-				Resolution: resolution,
 				Description: description,
 			});
 
@@ -192,7 +237,17 @@ Template.problems.helpers({
 			collection: CommonProblems,
 			rowsPerPage: 5,
 			showFilter: true,
-			fields: ["Description", "Troubleshooting"]
+			fields: ["Description", "Troubleshooting", "Cost",
+                {
+                    key: "_id",
+                    label: 'Count',
+                    fn: function(value, obj, key){
+                        return SMBC.Ticket.getTickets().filter(function(ticket){
+                            return ticket.Problem === value;
+                        }).length;
+                    }
+                }
+            ]
 		}
 	}
 })
@@ -219,11 +274,13 @@ Template.problems.events({
 		event.preventDefault();
 
 		var title = $("input#textEditProblemTitle").val();
-		var reslution = document.getElementById('textEditProblemResolution').value;
+        var cost = $("input#textEditCost").val();
+		var resolution = document.getElementById('textEditProblemResolution').value;
 
 		CommonProblems.insert({
 			Description: title,
-			Troubleshooting: reslution
+            Cost: cost,
+			Troubleshooting: resolution
 		});
 	},
 
@@ -234,10 +291,7 @@ Template.problems.events({
 
 		//Clear out data in form
 		$("input#textEditProblemTitle").val("");
+        $("input#textEditCost").val("");
 		document.getElementById('textEditProblemResolution').value = "";
 	}
 })
-
-var getCustomerName = function(customerId){
-    return Customers.findOne({_id: customerId}).Name;
-}

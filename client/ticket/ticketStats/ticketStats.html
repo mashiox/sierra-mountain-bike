@@ -1,0 +1,35 @@
+<template name="ticketStats">
+    <div style="clear:both;">
+        <ul class="list-group" style="text-align:left;">
+            <li class="list-group-item">
+                <span class="badge"> {{ numTickets }} </span>
+                Number of Tickets
+            </li>
+            
+            <li class="list-group-item">
+                <span class="badge"> {{ numOpenTickets }} </span>
+                Number of Open Tickets
+            </li>
+            
+            <li class="list-group-item">
+                <span class="badge"> {{ numClosedTickets }} </span>
+                Number of Closed Tickets
+            </li>
+            
+            <li class="list-group-item">
+                <span class="badge"> {{ avgCloseTime }} </span>
+                Average Close Time
+            </li>
+            
+            <li class="list-group-item">
+                <span class="badge"> {{ repairsPerDay }} </span>
+                Repairs Per Day
+            </li>
+            
+            <li class="list-group-item">
+                <span class="badge"> {{ avgRepairsPerDay }} </span>
+                Average Repairs Per Day
+            </li>
+        </ul>
+    </div>
+</template>
