@@ -50,6 +50,14 @@ Template.tickets.helpers({
             ]
 		}
 	},
+	
+	All_Customers: function () {
+		return Customers.find();
+	},
+
+	All_Common_Problem: function(){
+		return CommonProblems.find();
+	},
     
     AC_Settings_Customers: function(){
         return {
@@ -199,6 +207,15 @@ Template.customers.helpers({
 })
 
 Template.customers.events({
+	'dblclick .reactive-table tbody tr': function (event) {
+		var customer = this;
+		$("input#textCustomerName").val(customer.Name);
+		$("input#textCustomerPhone").val(customer.Phone);
+		document.getElementById('textCustomerAddress').value = customer.Address;
+		var elem = document.getElementById('editCustomerDialog');
+		elem.style.visibility = 'visible';
+	},
+
 	'click button#btnNewCustomer': function (event) {
 		event.preventDefault();
 
@@ -253,8 +270,10 @@ Template.problems.helpers({
 })
 
 Template.problems.events({
-	'dblclick tr': function (event) {
-		event.preventDefault();
+	'dblclick .reactive-table tbody tr': function (event) {
+		var problem = this;
+		$("input#textEditProblemTitle").val(problem.Description);
+		document.getElementById('textEditProblemResolution').value = problem.Troubleshooting;
 		var elem = document.getElementById('editProblemDialog');
 		elem.style.visibility = 'visible';
 	},
