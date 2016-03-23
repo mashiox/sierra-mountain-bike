@@ -122,7 +122,9 @@ Template.tickets.events({
 
 	'click button#export': function (event) {
 		event.preventDefault();
-		alert("Export Button Clicked");
+        var data = Tickets.find({}).fetch();
+        var csv = Papa.unparse(data);     
+        window.open('data:application/csv;charset=utf-8,' + csv);
 	},
 
 	'click button#newticket': function (event) {
