@@ -111,28 +111,35 @@
 	{{> reactiveTable settings=all_customers }}
 	<p>&nbsp;</p>
 
-	<button type="button" class="btn btn-default" id="btnNewCustomer">New Customer</button>
-
-
-	<div id="editCustomerDialog" class="Dialog">
-		<p>
-			<input type="text" id="textCustomerName" class="form-control" placeholder="Name" />
-		</p>
-		<p>
-			<input type="text" id="textCustomerPhone" class="form-control" placeholder="Phone Number" />
-		</p>
-		<p>
-			<textarea id="textCustomerAddress" style="width: 400px; height: 200px;" class="form-control" placeholder="Address"></textarea>
-		</p>
-		<p>
-			<button type="button" class="btn btn-default" id="btnSaveCustomerEdit">Save</button>
-			<button type="button" class="btn btn-default" id="btnCancelCustomerEdit">Close</button>
-		</p>
-	</div>
+	<button type="button" class="btn btn-default" id="btnAddCustomer">Add Customer</button>
 </template>
 
 <template name="customerOptionsColumn">
 	<button type="button" id="btnEditCustomer" class="btn btn-default">Edit</button>
+</template>
+
+<template name="dialogEditCustomer">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<input id="txtEditCustomerName" type="text" placeholder="Name" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4">
+						<input id="txtEditCustomerPhone" type="text" placeholder="Phone Number" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<textarea id="txtEditCustomerAddress" style="width: 350px; height: 200px;" class="form-control" placeholder="Address"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </template>
 
 <template name="problems">
@@ -167,17 +174,17 @@
 			<form class="form-horizontal">
 				<div class="form-group">
 					<div class="col-md-10">
-						<input id="txtNewProblemTitle" type="text" placeholder="Problem" class="form-control input-md">
+						<input id="txtEditProblemTitle" type="text" placeholder="Problem" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-4">
-						<input id="txtNewProblemCost" type="text" placeholder="Cost" class="form-control input-md">
+						<input id="txtEditProblemCost" type="text" placeholder="Cost" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-10">
-						<textarea id="txtNewProblemTroubleshooting" style="width: 350px; height: 200px;" class="form-control" placeholder="Resolution"></textarea>
+						<textarea id="txtEditProblemTroubleshooting" style="width: 350px; height: 200px;" class="form-control" placeholder="Resolution"></textarea>
 					</div>
 				</div>
 			</form>

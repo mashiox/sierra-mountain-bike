@@ -221,43 +221,92 @@ Template.customers.events({
 	'click button#btnEditCustomer': function (event) {
 		event.preventDefault();
 
-		document.getElementById('textCustomerName').value = this.Name;
-		document.getElementById('textCustomerPhone').value = this.Phone;
-		document.getElementById('textCustomerAddress').value = this.Address;
+		var obj = this; // need to store this reference to process the update operation
 
-		var elem = document.getElementById('editCustomerDialog');
-		elem.style.visibility = 'visible';
-	},
+		bootbox.dialog({
+			title: "Update customer...",
+			onEscape: true,
+			backdrop: true,
+			message: renderTmp(Template.dialogEditCustomer),
+			buttons: {
+				success: {
+					label: "Update",
+					className: "btn-success",
+					callback: function () {
+						var name = $('#txtEditCustomerName').val().trim();
+						var phone = $('#txtEditCustomerPhone').val().trim();
+						var address = $('#txtEditCustomerAddress').val().trim();
 
-	'click button#btnNewCustomer': function (event) {
-		event.preventDefault();
+						if (name == '' || phone == '' || address == '') {
+							swal('Oops...', 'All fields must be filled out!', 'error');
+							return false;
+						}
 
-		var elem = document.getElementById('editCustomerDialog');
-		elem.style.visibility = 'visible';
-	},
+						if (name == obj.Name && phone == obj.Phone && address == obj.Address) {
+							swal('Oops...', 'No fields were changed', 'warning');
+							return false;
+						}
 
-	'click button#btnSaveCustomerEdit': function (event) {
-		event.preventDefault();
+						var match = Customers.findOne({ Name: new RegExp('^' + name + '$', "i") })
+						if (match && match._id != obj._id) {
+							swal('Oops...', 'That customer already exists!', 'error');
+							return false;
+						}
 
-		var name = document.getElementById('textCustomerName').value;
-		var phone = document.getElementById('textCustomerPhone').value;
-		var address = document.getElementById('textCustomerAddress').value;
+						Customers.update({ _id: obj._id }, { $set: { Name: name, Phone: phone, Address: address } });
 
-		Customers.insert({
-			Name: name,
-			Phone: phone,
-			Address: address,
+						swal('Success!', 'Customer updated!', 'success');
+						return true;
+					}
+				}
+			}
 		});
-		
-		document.getElementById('textCustomerName').value = "";
-		document.getElementById('textCustomerPhone').value = "";
-		document.getElementById('textCustomerAddress').value = "";
+
+		document.getElementById('txtEditCustomerName').value = this.Name;
+		document.getElementById('txtEditCustomerPhone').value = this.Phone;
+		document.getElementById('txtEditCustomerAddress').value = this.Address;
 	},
 
-	'click button#btnCancelCustomerEdit': function (event) {
+	'click button#btnAddCustomer': function (event) {
 		event.preventDefault();
-		var elem = document.getElementById('editCustomerDialog');
-		elem.style.visibility = 'collapse';
+
+		bootbox.dialog({
+			title: "Create new customer...",
+			onEscape: true,
+			backdrop: true,
+			message: renderTmp(Template.dialogEditCustomer),
+			buttons: {
+				success: {
+					label: "Create",
+					className: "btn-success",
+					callback: function () {
+						var name = $('#txtEditCustomerName').val().trim();
+						var phone = $('#txtEditCustomerPhone').val().trim();
+						var address = $('#txtEditCustomerAddress').val().trim();
+
+						if (name == '' || phone == '' || address == '') {
+							swal('Oops...', 'All fields must be filled out!', 'error');
+							return false;
+						}
+
+						var match = Customers.findOne({ Name: new RegExp('^' + name + '$', "i") });
+						if (match) {
+							swal('Oops...', 'That customer already exists!', 'error');
+							return false;
+						}
+
+						Customers.insert({
+							Name: name,
+							Phone: phone,
+							Address: address,
+						});
+
+						swal('Success!', 'Customer added!', 'success');
+						return true;
+					}
+				}
+			}
+		});
 	}
 })
 
@@ -299,9 +348,9 @@ Template.problems.events({
 					label: "Update",
 					className: "btn-success",
 					callback: function () {
-						var title = $('#txtNewProblemTitle').val().trim();
-						var cost = $('#txtNewProblemCost').val().trim();
-						var troubleshooting = $('#txtNewProblemTroubleshooting').val().trim();
+						var title = $('#txtEditProblemTitle').val().trim();
+						var cost = $('#txtEditProblemCost').val().trim();
+						var troubleshooting = $('#txtEditProblemTroubleshooting').val().trim();
 
 						if (title == '' || cost == '' || troubleshooting == '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
@@ -328,9 +377,9 @@ Template.problems.events({
 			}
 		});
 
-		document.getElementById('txtNewProblemTitle').value = this.Description;
-		document.getElementById('txtNewProblemCost').value = this.Cost;
-		document.getElementById('txtNewProblemTroubleshooting').value = this.Troubleshooting;
+		document.getElementById('txtEditProblemTitle').value = this.Description;
+		document.getElementById('txtEditProblemCost').value = this.Cost;
+		document.getElementById('txtEditProblemTroubleshooting').value = this.Troubleshooting;
 	},
 
 	'click button#btnAddProblem': function (event) {
@@ -346,9 +395,9 @@ Template.problems.events({
 					label: "Create",
 					className: "btn-success",
 					callback: function () {
-						var title = $('#txtNewProblemTitle').val().trim();
-						var cost = $('#txtNewProblemCost').val().trim();
-						var troubleshooting = $('#txtNewProblemTroubleshooting').val().trim();
+						var title = $('#txtEditProblemTitle').val().trim();
+						var cost = $('#txtEditProblemCost').val().trim();
+						var troubleshooting = $('#txtEditProblemTroubleshooting').val().trim();
 
 						if (title == '' || cost == '' || troubleshooting == '')
 						{
