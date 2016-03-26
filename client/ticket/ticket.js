@@ -287,48 +287,105 @@ Template.problems.events({
 	'click button#btnEditProblem': function (event) {
 		event.preventDefault();
 
-		document.getElementById('textEditProblemTitle').value = this.Description;
-		document.getElementById('textEditCost').value = this.Cost;
-		document.getElementById('textEditProblemResolution').value = this.Troubleshooting;
+		var obj = this; // need to store this reference to process the update operation
 
-		var elem = document.getElementById('editProblemDialog');
-		elem.style.visibility = 'visible';
+		bootbox.dialog({
+			title: "Update problem...",
+			onEscape: true,
+			backdrop: true,
+			message: renderTmp(Template.dialogEditProblem),
+			buttons: {
+				success: {
+					label: "Update",
+					className: "btn-success",
+					callback: function () {
+						var title = $('#txtNewProblemTitle').val().trim();
+						var cost = $('#txtNewProblemCost').val().trim();
+						var troubleshooting = $('#txtNewProblemTroubleshooting').val().trim();
 
+						if (title == '' || cost == '' || troubleshooting == '') {
+							swal('Oops...', 'All fields must be filled out!', 'error');
+							return false;
+						}
+
+						if (title == obj.Description && cost == obj.Cost && troubleshooting == obj.Troubleshooting) {
+							swal('Oops...', 'No fields were changed', 'warning');
+							return false;
+						}
+
+						var match = CommonProblems.findOne({ Description: new RegExp('^' + title + '$', "i") })
+						if (match && match._id != obj._id) {
+							swal('Oops...', 'That problem already exists!', 'error');
+							return false;
+						}
+
+						CommonProblems.update({ _id: obj._id }, { $set: { Description: title, Cost: cost, Troubleshooting: troubleshooting } });
+
+						swal('Success!', 'Problem updated!', 'success');
+						return true;
+					}
+				}
+			}
+		});
+
+		document.getElementById('txtNewProblemTitle').value = this.Description;
+		document.getElementById('txtNewProblemCost').value = this.Cost;
+		document.getElementById('txtNewProblemTroubleshooting').value = this.Troubleshooting;
+	},
+
+	'click button#btnAddProblem': function (event) {
+		event.preventDefault();
+
+		bootbox.dialog({
+			title: "Create new problem...",
+			onEscape: true,
+			backdrop: true,
+			message: renderTmp(Template.dialogEditProblem),
+			buttons: {
+				success: {
+					label: "Create",
+					className: "btn-success",
+					callback: function () {
+						var title = $('#txtNewProblemTitle').val().trim();
+						var cost = $('#txtNewProblemCost').val().trim();
+						var troubleshooting = $('#txtNewProblemTroubleshooting').val().trim();
+
+						if (title == '' || cost == '' || troubleshooting == '')
+						{
+							swal('Oops...', 'All fields must be filled out!', 'error');
+							return false;
+						}
+
+						var match = CommonProblems.findOne({ Description: new RegExp('^' + title + '$', "i")});
+						if (match)
+						{
+							swal('Oops...', 'That problem already exists!', 'error');
+							return false;
+						}
+
+						CommonProblems.insert({
+							Description: title,
+							Cost: cost,
+							Troubleshooting: troubleshooting
+						});
+
+						swal('Success!', 'Problem added!', 'success');
+						return true;
+					}
+				}
+			}
+		});
 	},
 
 	'click button#stats': function (event) {
 		event.preventDefault();
 		alert("Stats Summary Clicked");
-	},
-
-	'click button#btnAddProblem': function (event) {
-		event.preventDefault();
-		var elem = document.getElementById('editProblemDialog');
-		elem.style.visibility = 'visible';
-	},
-
-	'click button#btnSaveProblemEdit': function (event) {
-		event.preventDefault();
-
-		var title = $("input#textEditProblemTitle").val();
-        var cost = $("input#textEditCost").val();
-		var resolution = document.getElementById('textEditProblemResolution').value;
-
-		CommonProblems.insert({
-			Description: title,
-            Cost: cost,
-			Troubleshooting: resolution
-		});
-	},
-
-	'click button#btnCancelProblemEdit': function (event) {
-		event.preventDefault();
-		var elem = document.getElementById('editProblemDialog');
-		elem.style.visibility = 'collapse';
-
-		//Clear out data in form
-		$("input#textEditProblemTitle").val("");
-        $("input#textEditCost").val("");
-		document.getElementById('textEditProblemResolution').value = "";
 	}
 })
+
+var renderTmp = function (template, data) {
+	var node = document.createElement("div");
+	document.body.appendChild(node);
+	UI.renderWithData(template, data, node);
+	return node;
+}
