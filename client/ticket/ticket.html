@@ -103,6 +103,10 @@
     <p><span class=""> {{Troubleshooting}}</span></p>
 </template>
 
+<template name="ticketOptionsColumn">
+	<button type="button" id="btnEditTicket" class="btn btn-default">Edit</button>
+</template>
+
 <template name="customers">
 	{{> reactiveTable settings=all_customers }}
 	<p>&nbsp;</p>
@@ -125,6 +129,10 @@
 			<button type="button" class="btn btn-default" id="btnCancelCustomerEdit">Close</button>
 		</p>
 	</div>
+</template>
+
+<template name="customerOptionsColumn">
+	<button type="button" id="btnEditCustomer" class="btn btn-default">Edit</button>
 </template>
 
 <template name="problems">
@@ -164,4 +172,8 @@
 			<button type="button" class="btn btn-default" id="btnCancelProblemEdit">Close</button>
 		</p>
 	</div>
+</template>
+
+<template name="problemOptionsColumn">
+	<button type="button" id="btnEditProblem" class="btn btn-default">Edit</button>
 </template>

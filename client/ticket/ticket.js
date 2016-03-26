@@ -46,7 +46,8 @@ Template.tickets.helpers({
                     fn: function(value, object, key){
                         return value === -1 ? "Open" : "Closed";
                     }
-                }
+                },
+				{ key: 'options', label: 'Options', tmpl: Template.ticketOptionsColumn }
             ]
 		}
 	},
@@ -101,9 +102,16 @@ Template.tickets.events({
         $("input#phone").val(doc.Phone);
         $("input#problem").focus();
     },
-    
-	'dblclick tr': function (event) {
-		event.preventDefault();
+
+    'click button#btnEditTicket': function (event) {
+    	event.preventDefault();
+
+    	var customer = document.getElementById('selectTicketCustomer');
+    	customer.value = Customers.findOne({ _id: this.CustomerId }).Name;
+    	
+    	var problem = document.getElementById('selectTicketProblem');
+    	problem.value = CommonProblems.findOne({ _id: this.Problem }).Description;
+
 		var elem = document.getElementById('editTicketDialog');
 		elem.style.visibility = 'visible';
 	},
@@ -203,17 +211,20 @@ Template.customers.helpers({
 			collection: Customers,
 			rowsPerPage: 5,
 			showFilter: true,
-			fields: ["Name", "Phone", "Address"]
+			fields: ["Name", "Phone", "Address",
+			{ key: 'options', label: 'Options', tmpl: Template.customerOptionsColumn }]
 		}
 	}
 })
 
 Template.customers.events({
-	'dblclick .reactive-table tbody tr': function (event) {
-		var customer = this;
-		$("input#textCustomerName").val(customer.Name);
-		$("input#textCustomerPhone").val(customer.Phone);
-		document.getElementById('textCustomerAddress').value = customer.Address;
+	'click button#btnEditCustomer': function (event) {
+		event.preventDefault();
+
+		document.getElementById('textCustomerName').value = this.Name;
+		document.getElementById('textCustomerPhone').value = this.Phone;
+		document.getElementById('textCustomerAddress').value = this.Address;
+
 		var elem = document.getElementById('editCustomerDialog');
 		elem.style.visibility = 'visible';
 	},
@@ -265,19 +276,24 @@ Template.problems.helpers({
                             return ticket.Problem === value;
                         }).length;
                     }
-                }
+                },
+				{ key: 'options', label: 'Options', tmpl: Template.problemOptionsColumn }
             ]
 		}
 	}
 })
 
 Template.problems.events({
-	'dblclick .reactive-table tbody tr': function (event) {
-		var problem = this;
-		$("input#textEditProblemTitle").val(problem.Description);
-		document.getElementById('textEditProblemResolution').value = problem.Troubleshooting;
+	'click button#btnEditProblem': function (event) {
+		event.preventDefault();
+
+		document.getElementById('textEditProblemTitle').value = this.Description;
+		document.getElementById('textEditCost').value = this.Cost;
+		document.getElementById('textEditProblemResolution').value = this.Troubleshooting;
+
 		var elem = document.getElementById('editProblemDialog');
 		elem.style.visibility = 'visible';
+
 	},
 
 	'click button#stats': function (event) {
