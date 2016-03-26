@@ -50,82 +50,114 @@ Template.tickets.helpers({
 				{ key: 'options', label: 'Options', tmpl: Template.ticketOptionsColumn }
             ]
 		}
-	},
-	
-	All_Customers: function () {
-		return Customers.find();
-	},
-
-	All_Common_Problem: function(){
-		return CommonProblems.find();
-	},
-    
-    AC_Settings_Customers: function(){
-        return {
-            position: "top",
-            limit: 5,
-            rules: [
-                {
-                    collection: Customers,
-                    field: "Name",
-                    template: Template.tickets_customerPill
-                }
-            ]
-        };
-    },
-    
-    AC_Settings_Problems: function(){
-        return {
-            position: "top",
-            limit: 5,
-            rules: [
-                {
-                    collection: CommonProblems,
-                    field: "Description",
-                    template: Template.tickets_problemsPill
-                }
-            ]
-        };
-    }
+	}
 })
 
 Template.tickets.events({
-    'autocompleteselect input#problem': function(event, template, doc){
-        Session.set("problemId", doc._id);
-        $("input#resolution").val(doc.Troubleshooting);
-        $("input#cost").val(doc.Cost);
-    },
-    
-    'autocompleteselect input#name': function(event, template, doc){
-        Session.set("customerId", doc._id);
-        $("input#address").val(doc.Address);
-        $("input#phone").val(doc.Phone);
-        $("input#problem").focus();
-    },
-
     'click button#btnEditTicket': function (event) {
     	event.preventDefault();
 
-    	var customer = document.getElementById('selectTicketCustomer');
-    	customer.value = Customers.findOne({ _id: this.CustomerId }).Name;
-    	
-    	var problem = document.getElementById('selectTicketProblem');
-    	problem.value = CommonProblems.findOne({ _id: this.Problem }).Description;
+    	var obj = this; // need to store this reference to process the update operation
 
-		var elem = document.getElementById('editTicketDialog');
-		elem.style.visibility = 'visible';
-	},
+    	bootbox.dialog({
+    		title: "Update ticket...",
+    		onEscape: true,
+    		backdrop: true,
+    		message: renderTmp(Template.dialogEditTicket),
+    		buttons: {
+    			success: {
+    				label: "Update",
+    				className: "btn-success",
+    				callback: function () {
+    					var customerID = $('#selectEditTicketCustomer').val();
+    					var problemID = $('#selectEditTicketProblem').val();
+    					var notes = $("#txtEditTicketNotes").val();
+    					var status = $("#selectEditTicketStatus").val();
 
-	'click button#btnNewTicket': function (event) {
+    					var customer = Customers.findOne({ _id: customerID });
+    					if (customer == null) {
+    						swal('Oops...', 'Select a customer!', 'error');
+    						return false;
+    					}
+
+    					if (customerID == obj.CustomerId && problemID == obj.Problem && notes == obj.Notes && status == obj.Status) {
+    						swal('Oops...', 'No fields were changed', 'warning');
+    						return false;
+    					}
+
+    					var problem = CommonProblems.findOne({ _id: problemID });
+    					if (problem == null) {
+    						swal('Oops...', 'Select a problem!', 'error');
+    						return false;
+    					}
+
+    					Tickets.update({ _id: obj._id }, { $set: { CustomerId: customer._id || customer, Problem: problem._id || problem, Status: status, Notes: notes } });
+
+    					if (status != obj.Status && status === "Closed") {
+    						alert("Closed");
+    						Tickets.update({ _id: obj._id }, { $set: { CloseDate: new Date() } });
+    					}
+
+    					swal('Success!', 'Ticket updated!', 'success');
+    					return true;
+    				}
+    			}
+    		}
+    	});
+
+    	document.getElementById('selectEditTicketCustomer').value = this.CustomerId;
+    	document.getElementById('selectEditTicketProblem').value = this.Problem;
+    	document.getElementById('txtEditTicketNotes').value = this.Notes;
+    	document.getElementById('selectEditTicketStatus').value = this.Status;
+    },
+
+	'click button#btnAddTicket': function (event) {
 		event.preventDefault();
-		var elem = document.getElementById('editTicketDialog');
-		elem.style.visibility = 'visible';
-	},
 
-	'click button#btnCancelTicketEdit': function (event) {
-		event.preventDefault();
-		var elem = document.getElementById('editTicketDialog');
-		elem.style.visibility = 'collapse';
+		bootbox.dialog({
+			title: "Create new ticket...",
+			onEscape: true,
+			backdrop: true,
+			message: renderTmp(Template.dialogEditTicket),
+			buttons: {
+				success: {
+					label: "Create",
+					className: "btn-success",
+					callback: function () {
+						var customerID = $('#selectEditTicketCustomer').val();
+						var problemID = $('#selectEditTicketProblem').val();
+						var notes = $("#txtEditTicketNotes").val();
+						var status = $("#selectEditTicketStatus").val();
+
+						var customer = Customers.findOne({ _id: customerID });
+						if (customer == null) {
+							swal('Oops...', 'Select a customer!', 'error');
+							return false;
+						}
+
+						var problem = CommonProblems.findOne({ _id: problemID });
+						if (problem == null) {
+							swal('Oops...', 'Select a problem!', 'error');
+							return false;
+						}
+
+						Tickets.insert({
+							CustomerId: customer._id || customer,
+							Date: new Date(),
+							CloseDate: -1,
+							Problem: problem._id || problem,
+							Status: status,
+							Notes: notes
+						});
+
+						swal('Success!', 'Ticket added!', 'success');
+						return true;
+					}
+				}
+			}
+		});
+
+		document.getElementById("selectEditTicketStatus").disabled = true;
 	},
 
 	'click button#export': function (event) {
@@ -133,75 +165,16 @@ Template.tickets.events({
         var data = Tickets.find({}).fetch();
         var csv = Papa.unparse(data);     
         window.open('data:application/csv;charset=utf-8,' + csv);
+	}
+})
+
+Template.dialogEditTicket.helpers({
+	All_Customers: function () {
+		return Customers.find();
 	},
 
-	'click button#newticket': function (event) {
-		// Variable to check for valid entry
-		var validEntry = true;
-
-		event.preventDefault();
-		// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-		var name = $("input#name").val();
-		var address = $("input#address").val();
-		var phone = $("input#phone").val();
-
-		var problem = $("input#problem").val();
-		var cost = $("input#cost").val();
-		var status = $("input#status").val();
-		var resolution = $("input#resolution").val();
-		var description = $("input#description").val();
-
-		//checks if any fields are left empty then it wont insert into table
-		if (name == "" || address == "" || phone == "" || problem == "" || cost == "" || status == "" || resolution == "" || description == "") {
-			validEntry = false;
-			alert("Please fill out all fields in the table.");
-		}
-		//Insert cell data into database
-		if (validEntry) {
-            
-            // TODO: Replace with Upsert
-            var custData = {
-                Name: name,
-                Phone: phone,
-                Address: address
-            };
-            var customer = Customers.findOne(custData);
-            if (!customer){
-                customer = Customers.insert(custData)
-            }
-            
-            var problemData = {
-                /* Cost not included, so that querying problems is indep of cost*/
-                Description: problem,
-                Troubleshooting: resolution
-            }
-            var problemD = CommonProblems.findOne(problemData);
-            if (!problemD){
-                problemData.Cost = cost; // if it dne, then make it the suggested cost.
-                problemD = CommonProblems.insert(problemData);
-            }
-            
-			Tickets.insert({
-				CustomerId: customer._id || customer,
-				Date: new Date(),
-                CloseDate: -1,
-				Problem: problemD._id || problemD,
-				Cost: cost,
-				Status: status,
-				Description: description,
-			});
-
-			//Clear out data in form
-			$("input#name").val("");
-			$("input#address").val("");
-			$("input#phone").val("");
-
-			$("input#problem").val("");
-			$("input#cost").val("");
-			$("input#status").val("");
-			$("input#resolution").val("");
-			$("input#description").val("");
-		}
+	All_Common_Problem: function(){
+		return CommonProblems.find();
 	}
 })
 
