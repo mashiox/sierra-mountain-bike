@@ -2,16 +2,21 @@ div.container{
     
 }
 
-.Dialog {
-	position:absolute;
-	width:auto;
-	height:auto;
-	z-index:1000;
-	left: 280px;
-	top: 100px;
-	border-radius: 15px;
-	background-color: #6FB34A;
-	border: 1px solid #666;
-	padding: 20px;
-	visibility: collapse;
+ul.pagination li.active a:link, ul.pagination li.active a:active {
+	border: 1px solid #6FB34A;
+    background-color: #6FB34A;
+	font-weight: normal;
+    color: white;
+}
+
+ul.pagination li a:link {
+    color: #333;
+}
+
+ul li a:link {
+	outline: none;
+}
+
+ul li a:hover {
+	font-weight: bold;
 }

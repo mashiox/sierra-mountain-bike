@@ -4,7 +4,7 @@
 			<h3>Repair Ticket Management System</h3>
 			<nav id="ticketNavigation">
 				<ul class="pagination">
-					<li id="Tickets"><a href="#">Repair Tickets</a></li>
+					<li class="active" id="Tickets"><a href="#">Repair Tickets</a></li>
 					<li id="Customers"><a href="#">Customers</a></li>
 					<li id="Problems"><a href="#">Common Problems</a></li>
                     <li id="Stats"><a href="#">Stats</a></li>
@@ -28,7 +28,6 @@
 
 <template name="tickets">
 	{{> reactiveTable settings=all_tickets }}
-	<p>&nbsp;</p>
 
 	<button type="button" class="btn btn-default" id="btnAddTicket">Add Ticket</button>
 	<button type="button" class="btn btn-default" id="export">Export Data</button>
@@ -84,7 +83,6 @@
 
 <template name="customers">
 	{{> reactiveTable settings=all_customers }}
-	<p>&nbsp;</p>
 
 	<button type="button" class="btn btn-default" id="btnAddCustomer">Add Customer</button>
 </template>
@@ -119,7 +117,6 @@
 
 <template name="problems">
 	{{> reactiveTable settings=all_problems }}
-	<p>&nbsp;</p>
 
 	<button type="button" class="btn btn-default" id="btnAddProblem">Add Problem</button>
 

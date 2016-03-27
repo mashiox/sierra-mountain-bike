@@ -1,10 +1,4 @@
 Template.ticket.events({
-	'click li': function (event) {
-		event.preventDefault();
-		$("div#displayTable").hide();
-		$("div.table" + event.currentTarget.id).show();
-	},
-
 	'submit .new-search': function (event) {
 		events.preventDefault();
 		event.target.text.value = "";
