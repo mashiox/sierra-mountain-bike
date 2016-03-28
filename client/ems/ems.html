@@ -34,10 +34,11 @@
 		</span>
 		</div><!-- /input-group -->
 	</div><!-- /.col-lg-4 -->
+
+    {{> reactiveTable settings=all_employees }}
 	
-    <table id="employeeTable" class="table table-hover">
-        <thead>
-            <tr>
+    <table>
+            <!--tr>
 				<th>
 					<input type="checkbox">
 				</th>
@@ -47,11 +48,17 @@
 				<th>Started</th>
 				<th>Location</th>
 				<th>Actions</th>
-            </tr>
-        </thead>
+            </tr-->
         <tbody>
+            <tr> 
+                <td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
+                <td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
+                <td><input id="ssn" type="text" class="form-control" placeholder="Enter SSN"></td>
+                <td><input id="address" type="text" class="form-control" placeholder="Enter Position"></td>
+                <td><input id="position" type="text" class="form-control" placeholder="Enter Salary"></td>
+            </tr>
         <!-- {{#each employee}} -->
-        <tr>
+        <!--tr>
             <td>
 				<input type="checkbox">
 			</td>
@@ -69,7 +76,7 @@
 				<option>Remove</option>
 			</select>
 			</td>
-        </tr>
+        </tr-->
         <!-- {{/each}} -->
         </tbody>
     </table>
