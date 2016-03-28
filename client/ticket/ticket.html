@@ -4,7 +4,7 @@
 			<h3>Repair Ticket Management System</h3>
 			<nav id="ticketNavigation">
 				<ul class="pagination">
-					<li id="Tickets"><a href="#">Repair Tickets</a></li>
+					<li class="active" id="Tickets"><a href="#">Repair Tickets</a></li>
 					<li id="Customers"><a href="#">Customers</a></li>
 					<li id="Problems"><a href="#">Common Problems</a></li>
                     <li id="Stats"><a href="#">Stats</a></li>
@@ -28,110 +28,97 @@
 
 <template name="tickets">
 	{{> reactiveTable settings=all_tickets }}
-	<p>&nbsp;</p>
 
-	<table>
-		<tbody>
-			<tr>
-				<td>
-                    {{> inputAutocomplete settings=AC_Settings_Customers class="form-control" placeholder="Enter Name" id="name" }}
-                </td>
-				<td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
-				<td><input id="phone" type="text" class="form-control" placeholder="Enter Phone #" minlength="10" maxlength="10"></td>
-				<td></td>
-				<td>
-                    {{> inputAutocomplete id="problem" settings=AC_Settings_Problems class="form-control" placeholder="Enter Problem"}}
-                </td>
-				<td><input id="cost" type="text" class="form-control" placeholder="Enter Cost"></td>
-				<td><input id="resolution" type="text" class="form-control" placeholder="Enter Resolution"></td>
-				<td><input id="description" type="text" class="form-control" placeholder="Enter Description"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<p>&nbsp;</p>
-
-	<button type="button" class="btn btn-default" id="btnNewTicket">New Ticket</button>
-	<button type="button" class="btn btn-default" id="newticket">Insert New Ticket</button>
+	<button type="button" class="btn btn-default" id="btnAddTicket">Add Ticket</button>
 	<button type="button" class="btn btn-default" id="export">Export Data</button>
+</template>
 
-	<div id="editTicketDialog" class="Dialog">
-		<p>
-			<select id="selectTicketCustomer" class="form-control">
-				<option disabled selected hidden>Select Customer</option>
-				{{#each All_Customers}}
-				<option value="{{this.Name}}">{{this.Name}}</option>
-				{{/each}}
-			</select>
-		</p>
-		<p>
-			<select id="selectTicketProblem" class="form-control">
-				<option disabled selected hidden>Select Problem</option>
-				{{#each All_Common_Problem}}
-				<option value="{{this.Description}}">{{this.Description}}</option>
-				{{/each}}
-			</select>
-		</p>
-		<p>
-			<select id="selectTicketStatus" class="form-control">
-				<option>Open</option>
-				<option>Being Worked</option>
-				<option>Closed</option>
-			</select>
-		</p>
-		<p>
-			<input type="text" id="textTicketCost" class="form-control" placeholder="Estimated Cost" />
-		</p>
-		<p>
-			<textarea id="textTicketDescription" style="width: 400px; height: 200px;" class="form-control" placeholder="Description"></textarea>
-		</p>
-		<p>
-			<button type="button" class="btn btn-default" id="btnSaveTicketEdit">Save</button>
-			<button type="button" class="btn btn-default" id="btnCancelTicketEdit">Close</button>
-		</p>
+<template name="dialogEditTicket">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<select id="selectEditTicketCustomer" class="form-control input-md">
+							<option disabled selected hidden>Select Customer</option>
+							{{#each All_Customers}}
+							<option value="{{this._id}}">{{this.Name}}</option>
+							{{/each}}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<select id="selectEditTicketProblem" class="form-control input-md">
+							<option disabled selected hidden>Select Problem</option>
+							{{#each All_Common_Problem}}
+							<option value="{{this._id}}">{{this.Description}}</option>
+							{{/each}}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<textarea id="txtEditTicketNotes" style="width: 400px; height: 200px;" class="form-control input-md" placeholder="Notes"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4">
+						<label for="selectEditTicketStatus">Status</label>
+						<select id="selectEditTicketStatus" class="form-control input-md">
+							<option value="Open">Open</option>
+							<option value="Being Worked">Being Worked</option>
+							<option value="Closed">Closed</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
 
-<template name="tickets_customerPill">
-    <p><span class="glyphicon glyphicon-user"> {{Name}}</span></p>
-    <p><span class="glyphicon glyphicon-earphone"> {{Phone}}</span></p>
-    <p><span class="glyphicon glyphicon-home"> {{Address}}</span></p>
-</template>
-
-<template name="tickets_problemsPill">
-    <p><span class=""> {{Description}}</span></p>
-    <p><span class=""> {{Troubleshooting}}</span></p>
+<template name="ticketOptionsColumn">
+	<button type="button" id="btnEditTicket" class="btn btn-default">Edit</button>
 </template>
 
 <template name="customers">
 	{{> reactiveTable settings=all_customers }}
-	<p>&nbsp;</p>
 
-	<button type="button" class="btn btn-default" id="btnNewCustomer">New Customer</button>
+	<button type="button" class="btn btn-default" id="btnAddCustomer">Add Customer</button>
+</template>
 
+<template name="customerOptionsColumn">
+	<button type="button" id="btnEditCustomer" class="btn btn-default">Edit</button>
+</template>
 
-	<div id="editCustomerDialog" class="Dialog">
-		<p>
-			<input type="text" id="textCustomerName" class="form-control" placeholder="Name" />
-		</p>
-		<p>
-			<input type="text" id="textCustomerPhone" class="form-control" placeholder="Phone Number" />
-		</p>
-		<p>
-			<textarea id="textCustomerAddress" style="width: 400px; height: 200px;" class="form-control" placeholder="Address"></textarea>
-		</p>
-		<p>
-			<button type="button" class="btn btn-default" id="btnSaveCustomerEdit">Save</button>
-			<button type="button" class="btn btn-default" id="btnCancelCustomerEdit">Close</button>
-		</p>
+<template name="dialogEditCustomer">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<input id="txtEditCustomerName" type="text" placeholder="Name" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4">
+						<input id="txtEditCustomerPhone" type="text" placeholder="Phone Number" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<textarea id="txtEditCustomerAddress" style="width: 350px; height: 200px;" class="form-control" placeholder="Address"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
 
 <template name="problems">
 	{{> reactiveTable settings=all_problems }}
-	<p>&nbsp;</p>
 
-	<button type="button" class="btn btn-default" id="btnAddProblem">Add Typical Problem</button>
+	<button type="button" class="btn btn-default" id="btnAddProblem">Add Problem</button>
 
 	<div class="btn-group">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -147,21 +134,32 @@
 	</div>
 
 	<button type="button" class="btn btn-default" id="stats">Stats Summary</button>
+</template>
 
+<template name="problemOptionsColumn">
+	<button type="button" id="btnEditProblem" class="btn btn-default">Edit</button>
+</template>
 
-	<div id="editProblemDialog" class="Dialog">
-		<p>
-			<input type="text" id="textEditProblemTitle" class="form-control" placeholder="Problem" />
-		</p>
-        <p>
-            <input type="text" id="textEditCost" class="form-control" placeholder="Suggested Cost" />
-        </p>
-		<p>
-			<textarea id="textEditProblemResolution" style="width: 600px; height: 400px;" class="form-control" placeholder="Resolution"></textarea>
-		</p>
-		<p>
-			<button type="button" class="btn btn-default" id="btnSaveProblemEdit">Save</button>
-			<button type="button" class="btn btn-default" id="btnCancelProblemEdit">Close</button>
-		</p>
+<template name="dialogEditProblem">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<input id="txtEditProblemTitle" type="text" placeholder="Problem" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-4">
+						<input id="txtEditProblemCost" type="text" placeholder="Cost" class="form-control input-md">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-10">
+						<textarea id="txtEditProblemTroubleshooting" style="width: 350px; height: 200px;" class="form-control" placeholder="Resolution"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
