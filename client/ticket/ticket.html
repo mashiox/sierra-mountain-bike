@@ -39,6 +39,7 @@
 			<form class="form-horizontal">
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="selectEditTicketCustomer">Customer</label>
 						<select id="selectEditTicketCustomer" class="form-control input-md">
 							<option disabled selected hidden>Select Customer</option>
 							{{#each All_Customers}}
@@ -49,6 +50,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="selectEditTicketProblem">Problem</label>
 						<select id="selectEditTicketProblem" class="form-control input-md">
 							<option disabled selected hidden>Select Problem</option>
 							{{#each All_Common_Problem}}
@@ -59,6 +61,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="txtEditTicketNotes">Notes</label>
 						<textarea id="txtEditTicketNotes" style="width: 400px; height: 200px;" class="form-control input-md" placeholder="Notes"></textarea>
 					</div>
 				</div>
@@ -97,16 +100,19 @@
 			<form class="form-horizontal">
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="txtEditCustomerName">Full Name</label>
 						<input id="txtEditCustomerName" type="text" placeholder="Name" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-4">
+						<label for="txtEditCustomerPhone">Phone Number</label>
 						<input id="txtEditCustomerPhone" type="text" placeholder="Phone Number" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="txtEditCustomerAddress">Address</label>
 						<textarea id="txtEditCustomerAddress" style="width: 350px; height: 200px;" class="form-control" placeholder="Address"></textarea>
 					</div>
 				</div>
@@ -146,16 +152,19 @@
 			<form class="form-horizontal">
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="txtEditProblemTitle">Description</label>
 						<input id="txtEditProblemTitle" type="text" placeholder="Problem" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-4">
+						<label for="txtEditProblemCost">Estimated Cost</label>
 						<input id="txtEditProblemCost" type="text" placeholder="Cost" class="form-control input-md">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-10">
+						<label for="txtEditProblemTroubleshooting">Troubleshooting</label>
 						<textarea id="txtEditProblemTroubleshooting" style="width: 350px; height: 200px;" class="form-control" placeholder="Resolution"></textarea>
 					</div>
 				</div>
