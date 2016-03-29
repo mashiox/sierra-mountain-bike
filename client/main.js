@@ -1,22 +1,20 @@
-Template.body.events({
-	'click li': function (event) {
-		event.preventDefault();
+paginationClickHelper = function (event) {
+    event.preventDefault();
+    
+    try {
+        if ($("li#" + event.currentTarget.id).hasClass("pagination").toString()) {
+            $("div#displayTable").hide();
+            $("div.table" + event.currentTarget.id).show();
 
-		try {
-			if ($("li#" + event.currentTarget.id).hasClass("pagination").toString()) {
-				$("div#displayTable").hide();
-				$("div.table" + event.currentTarget.id).show();
-
-				// update pagination
-				var $listItems = $('li');
-				$listItems.removeClass('active');
-				$("li#" + event.currentTarget.id).addClass('active');
-			}
-		} catch (e) {
-			// ignore this
-		}
-	}
-})
+            // update pagination
+            var $listItems = $('li');
+            $listItems.removeClass('active');
+            $("li#" + event.currentTarget.id).addClass('active');
+        }
+    } catch (e) {
+        // ignore this
+    }
+}
 
 Router.configure({
     layoutTemplate: 'ApplicationLayout',

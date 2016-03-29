@@ -1,10 +1,6 @@
 Template.ticket.events({
-    'click ul.pagination li': function (event) {
-        event.preventDefault();
-        $("div#displayTable").hide();
-        $("ul.pagination li.active").removeClass("active");
-        event.currentTarget.classList.add("active");
-        $("div.table" + event.currentTarget.id).show();
+    'click li': function (event) {
+		paginationClickHelper(event);
 	},
     
 	'submit .new-search': function (event) {
@@ -32,7 +28,7 @@ Template.tickets.helpers({
                     key: "Date",
                     label: "Ticked Opened",
                     fn: function(value, object, key){
-                        return value.toLocaleFormat();
+                        return object.Date.toLocaleFormat();
                     }
                 },
                 {
