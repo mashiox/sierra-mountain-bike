@@ -107,6 +107,23 @@ Template.vendorTable.events({
 		document.getElementById('txtEditVendorName').value = this.Name;
 		document.getElementById('txtEditVendorAddress').value = this.Address;
 		document.getElementById('txtEditVendorStatus').value = this.Status;
+	},
+
+	'click button#btnDeleteVendor': function (event) {
+		event.preventDefault();
+
+		var obj = this;
+
+		swal({
+			title: "Confirm",
+			text: "Delete vendor: " + obj.Name,
+			type: "info",
+			showCancelButton: true,
+			closeOnConfirm: true,
+		},
+			function () {
+				Vendors.remove(obj._id);
+			});
 	}
 })
 
