@@ -1,4 +1,12 @@
 Template.ticket.events({
+    'click ul.pagination li': function (event) {
+        event.preventDefault();
+        $("div#displayTable").hide();
+        $("ul.pagination li.active").removeClass("active");
+        event.currentTarget.classList.add("active");
+        $("div.table" + event.currentTarget.id).show();
+	},
+    
 	'submit .new-search': function (event) {
 		events.preventDefault();
 		event.target.text.value = "";
@@ -88,7 +96,6 @@ Template.tickets.events({
     					Tickets.update({ _id: obj._id }, { $set: { CustomerId: customer._id || customer, Problem: problem._id || problem, Status: status, Notes: notes } });
 
     					if (status != obj.Status && status === "Closed") {
-    						alert("Closed");
     						Tickets.update({ _id: obj._id }, { $set: { CloseDate: new Date() } });
     					}
 

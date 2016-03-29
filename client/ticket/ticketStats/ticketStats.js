@@ -12,7 +12,7 @@ Template.ticketStats.helpers({
     },
     
     avgCloseTime: function(){
-        return SMBC.Ticket.averageCloseTime();
+        return Time.durationMili( SMBC.Ticket.averageCloseTime() );
     },
     
     repairsPerDay: function(){
