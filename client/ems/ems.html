@@ -37,77 +37,58 @@
 
     {{> reactiveTable settings=all_employees }}
 	
-    <table>
-            <!--tr>
-				<th>
-					<input type="checkbox">
-				</th>
-				<th>Name</th>
-				<th>Employee ID</th>
-				<th>Position</th>
-				<th>Started</th>
-				<th>Location</th>
-				<th>Actions</th>
-            </tr-->
-        <tbody>
-            <tr> 
-                <td><input id="name" type="text" class="form-control" placeholder="Enter Name"></td>
-                <td><input id="address" type="text" class="form-control" placeholder="Enter Address"></td>
-                <td><input id="ssn" type="text" class="form-control" placeholder="Enter SSN"></td>
-                <td><input id="address" type="text" class="form-control" placeholder="Enter Position"></td>
-                <td><input id="position" type="text" class="form-control" placeholder="Enter Salary"></td>
-            </tr>
-        <!-- {{#each employee}} -->
-        <!--tr>
-            <td>
-				<input type="checkbox">
-			</td>
-			<td>John Smith</td>
-			<td>000001</td>
-			<td>Bicycle Repair Tech</td>
-			<td>5/10/2008</td>
-			<td>1234</td>
-			<td>
-			<select>
-				<option selected="selected">&nbsp;</option>
-				<option>Comments</option>
-				<option>Details</option>
-				<option>Payroll History</option>
-				<option>Remove</option>
-			</select>
-			</td>
-        </tr-->
-        <!-- {{/each}} -->
-        </tbody>
-    </table>
 	
-	<button type="button" onclick="alert('Exporting a list of employees and hours worked during a given period in a format that can be used to calculate payroll instructions')">Export Payroll Data</button>
-	<button type="button" onclick="alert('Adding employee...')">Add Employee</button>
+	<button type="button" class="btn btn-default" id="btnExportPayroll">Export Payroll Data</button>
+	<button type="button" class="btn btn-default" id="btnAddEmployee">Add Employee</button>
+</template>
+
+<template name="dialogEditEmployee">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="txtEditEmployeeName">Full Name</label>
+                        <input id="txtEditEmployeeName" type="text" placeholder="Name" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label for="txtEditEmployeeSSN">SSN</label>
+                        <input id="txtEditEmployeeSSN" type="text" placeholder="SSN" class="form-control input-md" maxlength="9">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="txtEditEmployeeAddress">Address</label>
+                        <input id="txtEditEmployeeAddress" type="text" placeholder="Address" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="txtEditEmployeeCity">City</label>
+                        <input id="txtEditEmployeeCity" type="text" placeholder="City" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label for="txtEditEmployeeState">State</label>
+                        <input id="txtEditEmployeeState" type="text" placeholder="State" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label for="txtEditEmployeeZip">Zip</label>
+                        <input id="txtEditEmployeeZip" type="text" placeholder="Zip" class="form-control input-md" maxlength="5">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 
 <template name="schedule">
-
-
-    <table id="scheduleTable" class="table table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-				<th>Employee ID</th>
-				<th>Position</th>
-				<th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-        <!-- {{#each entry}} -->
-        <tr>
-            <td>John Smith</td>
-			<td>000001</td>
-			<td>Bicycle Repair Tech</td>
-			<td>2/20/2016</td>
-        </tr>
-        <!-- {{/each}} -->
-        </tbody>
-    </table>
+    
 </template>
 
 <template name="clock">
