@@ -2,12 +2,10 @@
     <div class="body-container">
         <div class="item">
             <h3>Inventory</h3>
+            <div class="col-lg-8"></div>
             <div class="col-lg-4">
                 <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
-                </span>
+                    
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-4 -->
         	{{ > inventoryTable }}
@@ -17,34 +15,70 @@
 </template>
        
 <template name="inventoryTable">
-    <div>
-        <table class="table table-hover">
+    <div id="searchDisplay" class="row">
+        
+        <div class="col-md-6"></div>
+        
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </span>
+                <input id="inv_query" type="text" class="form-control" placeholder="Filter" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group " role="group" aria-label="...">
+                
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Condition <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="inv_conditionLink">
+                    <li><a href="#" value="2">New & Used</a></li>
+                    <li><a href="#" value="0" >New</a></li>
+                    <li><a href="#" value="1" >Used</a></li>
+                </ul>
+            </div>
+            <div class="btn-group " role="group" aria-label="...">
+                
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Category <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="inv_categoriesLink">
+                    <li><a href="#" value="4">All Categories</a></li>
+                    <li><a href="#" value="0" >Bikes</a></li>
+                    <li><a href="#" value="1" >Bike Parts & Supplies</a></li>
+                    <li><a href="#" value="2" >Bike Clothing</a></li>
+                    <li><a href="#" value="3" >Repair Parts & Supplies</a></li>
+                </ul>
+                
+            </div>
+        </div>
+        
+    </div>
+    <div id="simpleDisplay">
+        <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Item</th>
-                <th>Condition</th>
-                <th>Category</th>
-                <th>On-Hand</th>
-                <th>On-Order</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>On-Hand</th>
+                    <th>Condition</th>
+                    <th>Category</th>
+                </tr>
             </thead>
             <tbody>
-            <!-- {{ #each item }} -->
-            <tr>
-                <td>Row 2</td>
-                <td>Row 2</td>
-                <td>Row 2</td>
-                <td>Row 2</td>
-                <td>Row 2</td>
-                <td>
-                    <select>
-                        <option selected>Add</option>
-                        <option>Delete</option>
-                    </select>
-                </td>
-            </tr>
-            <!-- {{/each}} -->
+                {{#each item }}
+                <tr>
+                    <td>{{name}} </td>
+                    <td>{{description}} </td>
+                    <td>${{cost}} </td>
+                    <td>{{quantity}} </td>
+                    <td>{{conditionFilter condition }} </td>
+                    <td>{{categoryFilter category }} </td>
+                </tr>
+                {{/each }}
             </tbody>
         </table>
     </div>
