@@ -8,6 +8,8 @@
                     
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-4 -->
+            {{ > shoppingCart }}
+            <br>
         	{{ > inventoryTable }}
         </div>
     </div>
@@ -66,6 +68,7 @@
                     <th>On-Hand</th>
                     <th>Condition</th>
                     <th>Category</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,10 +80,133 @@
                     <td>{{quantity}} </td>
                     <td>{{conditionFilter condition }} </td>
                     <td>{{categoryFilter category }} </td>
+                    <td>
+                        <a href="#" rel="{{_id}}" id="inv_editItem" >
+                            <button type="button" class="btn btn-default" aria-label="Right Align">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </button>
+                        </a>
+                    </td>
                 </tr>
                 {{/each }}
             </tbody>
         </table>
     </div>
 
+</template>
+
+<template name="dialogEditInventory">
+    {{#with getProduct}}
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+                
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtProductName">{{name}}</label>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-4">
+						<label for="txtProductQuantity">
+                            On-hand stock: {{quantity}}
+                        </label>
+                        <br>
+                        <label for="txtProductQuantity">
+                            In-cart stock: {{planned}}
+                        </label>
+                        <input id="txtProductQuantity" type="text" placeholder="+/- Inventory Quantity" class="form-control input-md">
+					</div>
+				</div>
+                
+				<div class="form-group">
+					<div class="col-md-4">
+						<label for="txtEditProductCost">Price</label>
+						<input id="txtEditProductCost" type="text" placeholder="Price" class="form-control input-md" value="{{cost}}">
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-4">
+						<label for="txtEditProductCategory">Category</label>
+						<select id="txtEditProductCategory" class="form-control">
+                            <option value="0">Bikes</option>
+                            <option value="1">Bike Parts & Supplies</option>
+                            <option value="2">Bike Clothing</option>
+                            <option value="3">Repair Parts & Supplies</option>
+                        </select>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-4">
+						<label for="txtEditProductCondition">Condition</label>
+						<select id="txtEditProductCondition" class="form-control">
+                            <option value="0">New</option>
+                            <option value="1">Used</option>
+                        </select>
+					</div>
+				</div>
+                
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditProductDesc">Description</label>
+						<textarea id="txtEditProductDesc" style="width: 350px; height: 200px;" class="form-control" placeholder="Address">{{description}}</textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+    {{/with}}
+</template>
+
+<template name="shoppingCart">
+    {{#if shoppingCartExists}}
+    <div id="inv_cartRow">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+            <button id="inc_checkoutButton" type="button" class="btn btn-success" aria-label="Right Align">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                Checkout <span class="badge"> {{ shoppingCartLength }} </span>
+            </button>
+        </div>
+    </div>
+    {{/if}}
+</template>
+
+<template name="dialogInventoryCheckout">
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>In Cart</th>
+                        <th>In Stock</th>
+                        <th>Price Ea.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each getCart}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{planned}}</td>
+                        <td>{{quantity}}</td>
+                        <td>${{cost}}</td>
+                        <td>${{getItemCost planned cost}}</td>
+                    </tr>
+                    {{/each}}
+                    <tr>
+                        <th>Subtotal</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>${{getSubtotal}}</th>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+	</div>
 </template>

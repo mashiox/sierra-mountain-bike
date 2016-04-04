@@ -2,6 +2,7 @@ Template.inventory.onCreated(function(){
     Session.set("conditionFilter", 2);
     Session.set("categoryFilter", 4);
     Session.set("queryFilter", ".");
+    if ( !Session.get("shoppingCart") ) Session.set("shoppingCart", new Array() );
 })
 
 Template.inventory.helpers({
@@ -9,14 +10,7 @@ Template.inventory.helpers({
 })
 
 Template.inventory.events({
-    'keypress input#inv_SearchForm': function(event, template){
-        if ( event.which === 13 ){
-            
-            var query = template.find("#inv_SearchForm").value;
-            console.log ( query );
-            
-        }
-    }
+    
 });
 
 Template.inventoryTable.helpers({
@@ -84,6 +78,129 @@ Template.inventoryTable.events({
         Session.set("queryFilter",
             ( value === "" ? "." : value ) 
         );
+    },
+    
+    'click a#inv_editItem': function(event, template){
+        event.preventDefault();
+        var id = template.find(event.currentTarget).rel;
+        var item = Inventory.findOne({_id: id});
+        Session.set("editProductId", id);
+        if (item){
+            bootbox.dialog({
+                title: "Edit " + item.name,
+                onEscape: true,
+                backdrop: true,
+                message: renderTmp( Template.dialogEditInventory ),
+                buttons: {
+                    success: {
+                        label: "Update",
+                        className: "btn-success",
+                        callback: function(){
+                            var quantityDelta = parseInt($("input#txtProductQuantity").val());
+                            var price = parseInt($("input#txtEditProductCost").val())
+                            var category = parseInt( $("select#txtEditProductCategory").val() );
+                            var condition = parseInt( $("select#txtEditProductCondition").val() );
+                            var desc = $("textarea#txtEditProductDesc").val();
+                            
+                            var product = Inventory.findOne({_id: Session.get("editProductId")});
+                            if (product){
+                                product.planned = quantityDelta;
+                                product.cost = price;
+                                product.category = category;
+                                product.condition = condition;
+                                product.description = desc;
+                                Inventory.update({_id: product._id}, {
+                                    $set: {
+                                        cost: price,
+                                        category: category,
+                                        condition: condition,
+                                        description: desc
+                                    }
+                                });
+                                var item = Inventory.findOne({_id: product._id});
+                                item.planned = quantityDelta;
+                                var cart = Session.get("shoppingCart");
+                                cart.push( item );
+                                Session.set("shoppingCart", cart);
+                                
+                                swal("Success!", "Product updated!", 'success');
+                                return true;
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    }
+})
+
+Template.dialogEditInventory.helpers({
+    getProduct: function(){
+        return Inventory.findOne({ _id: Session.get("editProductId") });
+    }
+})
+
+Template.shoppingCart.helpers({
+    shoppingCartExists: function(){
+        return Session.get("shoppingCart").length > 0;
+    },
+    
+    shoppingCartLength: function(){
+        return Session.get("shoppingCart").length;
+    }
+})
+
+Template.shoppingCart.events({
+    'click button#inc_checkoutButton': function(event, template){
+        event.preventDefault();
+        bootbox.dialog({
+            title: "Checkout",
+            onEscape: true,
+            backdrop: true,
+            message: renderTmp( Template.dialogInventoryCheckout ),
+            buttons: {
+                success: {
+                    label: "Checkout!",
+                    className: "btn-success",
+                    callback: function(){
+                        var cart = Session.get("shoppingCart");
+                        for ( var index = 0 ; index < cart.length ; index++ ){
+                            var item = Inventory.findOne({_id: cart[index]._id });
+                            if (item){
+                                Inventory.update({ _id: item._id}, {
+                                    $set: {
+                                        quantity: ( item.quantity + cart[index].planned ),
+                                        planned: 0
+                                    }
+                                })
+                            }
+                        }
+                        Session.set("shoppingCart", new Array() );
+                        swal("Success!", "Shopping Cart Updated!", 'success');
+                        return true;
+                    }
+                }
+            }
+        })
+    }
+})
+
+Template.dialogInventoryCheckout.helpers({
+    getCart: function(){
+        return Session.get("shoppingCart");
+    },
+    getItemCost: function(planned, cost){
+        return planned*cost;
+    },
+    getSubtotal: function(){
+        if ( Session.get("shoppingCart").length ){
+            return Session.get("shoppingCart").map( function(item){
+                return item.planned*item.cost;
+            }).reduce( function(a,b){
+                return a+b;
+            });
+        }
+        else return 0;
     }
 })
 
@@ -99,4 +216,11 @@ var conditionFilter = function(){
         ? { $lte: Session.get("conditionFilter") } 
         : { $not: { $ne: Session.get("conditionFilter") } } 
     );
+}
+
+var renderTmp = function(template, data){
+    var node = document.createElement("div");
+    document.body.appendChild(node);
+    UI.renderWithData( template, data, node );
+    return node;
 }
