@@ -19,7 +19,14 @@
 <template name="inventoryTable">
     <div id="searchDisplay" class="row">
         
-        <div class="col-md-6"></div>
+        <div class="col-md-3">
+            <button id="inv_addNewProduct" type="button" class="btn btn-default" aria-label="Left Align">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add new product
+            </button>
+        </div>
+        
+        <div class="col-md-3"></div>
         
         <div class="col-md-3">
             <div class="input-group">
@@ -207,6 +214,65 @@
                     </tr>
                 </tbody>
             </table>
+		</div>
+	</div>
+</template>
+
+<template name="dialogNewInventory">
+    <div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtProductName">Product Name</label>
+						<input id="txtProductName" type="text" placeholder="Name" class="form-control input-md">
+					</div>
+				</div>
+                
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtProductOnHand">On-Hand Quantity</label>
+                        <input id="txtProductOnHand" type="text" placeholder="On-Hand" class="form-control input-md">
+					</div>
+				</div>
+                
+				<div class="form-group">
+					<div class="col-md-4">
+						<label for="txtProductPrice">Price</label>
+						<input id="txtProductPrice" type="text" placeholder="Price" class="form-control input-md">
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-4">
+						<label for="txtProductCategory">Category</label>
+						<select id="txtProductCategory" class="form-control">
+                            <option value="0">Bikes</option>
+                            <option value="1">Bike Parts & Supplies</option>
+                            <option value="2">Bike Clothing</option>
+                            <option value="3">Repair Parts & Supplies</option>
+                        </select>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-4">
+						<label for="txtProductCondition">Condition</label>
+						<select id="txtProductCondition" class="form-control">
+                            <option value="0">New</option>
+                            <option value="1">Used</option>
+                        </select>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-10">
+						<label for="txtProductDesc">Description</label>
+                        <textarea id="txtProductDesc" style="width: 350px; height: 200px;" class="form-control" placeholder="Description"></textarea>
+					</div>
+				</div>
+                
+			</form>
 		</div>
 	</div>
 </template>

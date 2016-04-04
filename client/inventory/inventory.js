@@ -26,13 +26,13 @@ Template.inventoryTable.helpers({
             ]
         }).fetch().filter( function( item ){
             return (
-                item.description.match( new RegExp( Session.get("queryFilter"), "g" ) )
+                item.description.match( new RegExp( Session.get("queryFilter"), "gi" ) )
                 || 
-                item.name.match( new RegExp( Session.get("queryFilter"), "g" ) )
+                item.name.match( new RegExp( Session.get("queryFilter"), "gi" ) )
                 ||
-                item.cost.toString().match( new RegExp( Session.get("queryFilter"), "g" ) )
+                item.cost.toString().match( new RegExp( Session.get("queryFilter"), "gi" ) )
                 ||
-                item.quantity.toString().match( new RegExp( Session.get("queryFilter"), "g" ) )
+                item.quantity.toString().match( new RegExp( Session.get("queryFilter"), "gi" ) )
             );
         });
     },
@@ -140,6 +140,70 @@ Template.inventoryTable.events({
                 }
             })
         }
+    },
+    
+    'click button#inv_addNewProduct': function(event,template){
+        event.preventDefault();
+        bootbox.dialog({
+            title: "Add New Inventory",
+            onEscape: true,
+            backdrop: true,
+            message: renderTmp( Template.dialogNewInventory ),
+            buttons: {
+                success: {
+                    label: "Update",
+                    className: "btn-success",
+                    callback: function(){
+                        var name = $("input#txtProductName").val();
+                        if ( !name.length ){
+                            swal("Oops...", "Enter a product name!", "error");
+                            return false;
+                        }
+                        
+                        var quantity = parseInt( $("input#txtProductOnHand").val() );
+                        if ( isNaN(quantity) || quantity < 0 ){
+                            swal("Oops...", "Enter a valid quantity!", 'error');
+                            return false;
+                        }
+                        
+                        var price = parseInt( $("input#txtProductPrice").val() );
+                        if ( isNaN(price) || price < 0 ){
+                            swal("Oops...", "Enter a valid price!", 'error');
+                            return false;
+                        }
+                        
+                        var category = parseInt( $("select#txtProductCategory").val() );
+                        if ( isNaN(category) || category < 0 ){
+                            swal("Oops...", "Select a valid category!", 'error');
+                            return false;
+                        }
+                        
+                        var condition = parseInt( $("select#txtProductCondition").val() );
+                        if ( isNaN(condition) || condition < 0 ){
+                            swal("Oops...", "Select a valid condition!", 'error');
+                            return false;
+                        }
+                        
+                        var desc = $("textarea#txtProductDesc").val();
+                        
+                        var item = Inventory.insert({
+                            name: name,
+                            description: desc,
+                            cost: price,
+                            quantity: quantity,
+                            condition: condition,
+                            category: category
+                        });
+                        
+                        if ( item ){
+                            swal("Success!", "New Item inserted!", "success");
+                        }
+                        else swal("Error", "Something went wrong...", 'error');
+                        
+                    }
+                }
+            }
+        });
     }
 })
 
@@ -217,6 +281,10 @@ Template.dialogInventoryCheckout.helpers({
         }
         else return 0;
     }
+})
+
+Template.dialogNewInventory.helpers({
+    
 })
 
 var categoryFilter = function(){
