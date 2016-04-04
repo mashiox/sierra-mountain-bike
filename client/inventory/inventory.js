@@ -96,13 +96,22 @@ Template.inventoryTable.events({
                         label: "Update",
                         className: "btn-success",
                         callback: function(){
+                            var product = Inventory.findOne({_id: Session.get("editProductId")});
+                            
                             var quantityDelta = parseInt($("input#txtProductQuantity").val());
+                            quantityDelta = ( isNaN(quantityDelta) ? 0 : quantityDelta );
+                            
                             var price = parseInt($("input#txtEditProductCost").val())
+                            price = ( isNaN(price) ? product.cost : price );
+                            
                             var category = parseInt( $("select#txtEditProductCategory").val() );
+                            category = ( isNaN(category) ? product.category : category );
+                            
                             var condition = parseInt( $("select#txtEditProductCondition").val() );
+                            condition = ( isNaN(condition) ? product.condition : condition );
+                            
                             var desc = $("textarea#txtEditProductDesc").val();
                             
-                            var product = Inventory.findOne({_id: Session.get("editProductId")});
                             if (product){
                                 product.planned = quantityDelta;
                                 product.cost = price;
@@ -132,6 +141,12 @@ Template.inventoryTable.events({
             })
         }
     }
+})
+
+Template.dialogEditInventory.onRendered(function(){
+    var item = Inventory.findOne({ _id: Session.get("editProductId") });
+    $("select#txtEditProductCategory option[value="+item.category+"]").attr("selected", "selected");
+    $("select#txtEditProductCondition option[value="+item.condition+"]").attr("selected", "selected");
 })
 
 Template.dialogEditInventory.helpers({
