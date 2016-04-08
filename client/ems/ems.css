@@ -1,3 +1,7 @@
 #employeeNavigation{
     float: left;
 }
+
+tr th.fc-day-header.fc-widget-header{
+    width: auto;
+}

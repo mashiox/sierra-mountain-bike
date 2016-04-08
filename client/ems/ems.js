@@ -19,6 +19,39 @@ Template.employees.helpers({
 	}
 })
 
+ Template.schedule.helpers({
+            options: function() {
+        return {
+            header: {
+                left: '',
+                center: 'title',
+                right: 'today month,agendaWeek,agendaDay prev,next'
+            },
+            class: "mainCalendar",
+            height: 600,
+            handleWindowResize:true
+        };
+        }
+    });
+  
+  Template.schedule.events({
+    'click .addEvent': function () {
+      /*  Events.insert({
+            date: new Date()
+        })
+        */
+        window.alert("add event clicked");
+    },
+    'click .removeEvent':function() {
+        /*var event = Events.findOne();
+        if(event) {
+            Events.remove(event._id);
+        }*/
+        window.alert("remove event clicked");
+    }
+});
+
+
 Template.employees.events({
 	'click button#btnAddEmployee': function (event) {
 		event.preventDefault();
