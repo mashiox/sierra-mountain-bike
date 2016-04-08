@@ -47,9 +47,23 @@
         <div class="col-md-12">
             <form class="form-horizontal">
                 <div class="form-group">
-                    <div class="col-md-10">
-                        <label for="txtEditEmployeeName">Full Name</label>
-                        <input id="txtEditEmployeeName" type="text" placeholder="Name" class="form-control input-md">
+                    <div class="col-md-4">
+                        <label for="txtEditEmployeeFName">First Name</label>
+                        <input id="txtEditEmployeeFName" type="text" placeholder="First Name" class="form-control input-md">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtEditEmployeeLName">Last Name</label>
+                        <input id="txtEditEmployeeLName" type="text" placeholder="Last Name" class="form-control input-md">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <label for="txtEditEmployeePosition">Position</label>
+                        <select id="txtEditEmployeePosition" class="form-control input-md">
+                            <option value="Admin">Admin</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Technician">Technician</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -59,13 +73,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <label for="txtEditEmployeeAddress">Address</label>
                         <input id="txtEditEmployeeAddress" type="text" placeholder="Address" class="form-control input-md">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <label for="txtEditEmployeeCity">City</label>
                         <input id="txtEditEmployeeCity" type="text" placeholder="City" class="form-control input-md">
                     </div>
@@ -85,6 +99,10 @@
             </form>
         </div>
     </div>
+</template>
+
+<template name="employeeActionsColumn">
+    <button type="button" id="btnEditEmployee" class="btn btn-default">Edit</button>
 </template>
 
 <template name="schedule">
