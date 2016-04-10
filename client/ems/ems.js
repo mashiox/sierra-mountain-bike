@@ -95,23 +95,27 @@ Template.employees.events({
 						var firstname = $('#txtEditEmployeeFName').val().trim();
 						var lastname = $('#txtEditEmployeeLName').val().trim();
 						var position = $('#txtEditEmployeePosition').val().trim();
+						var wage = document.getElementById("txtEditEmployeeWage").value;
+						wage = parseFloat(wage);
 						var ssn = obj.ssn;
 						var address = $('#txtEditEmployeeAddress').val().trim();
 						var city = $('#txtEditEmployeeCity').val().trim();
 						var state = $('#txtEditEmployeeState').val().trim();
 						var zip = $('#txtEditEmployeeZip').val().trim();
 
-						// var employee = Employees.findOne({ ssn: ssn });
-    		// 			if (employee == null) {
-    		// 				swal('Oops...', 'Select a employee!', 'error');
-    		// 				return false;
-    		// 			}
-
     					var chk = null; // This is used to test null returns from db updates
 
 						if (firstname == '' || lastname == '' || address == '' || city == '' ||
-							state == '') {
+							state == '' || wage == '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
+							return false;
+						}
+
+						if ( !isNaN(wage)) {
+							wage = wage.toFixed(2);
+						}
+						else {
+							swal('Oops...', 'Wage must be a number !', 'error');
 							return false;
 						}
 
@@ -146,11 +150,17 @@ Template.employees.events({
     							return false;
 							}
 						}
+						else if (wage!=obj.wage) {
+							chk = Employees.update({ _id: obj._id }, { $set: { wage: wage}});
+							if (chk == null) {
+								swal('Oops...', 'Error processing update', 'warning');
+    							return false;
+							}
+						}
 						else {
 							swal('Oops...', 'No fields were changed', 'warning');
     						return false;
 						}
-						// Employees.update({ _id: obj._id }, { $set: { 
 
 						swal('Success!', 'Employee updated!', 'success');
 						return true;
@@ -161,6 +171,7 @@ Template.employees.events({
 		document.getElementById('txtEditEmployeeFName').value = this.name.firstname;
     	document.getElementById('txtEditEmployeeLName').value = this.name.lastname;
     	document.getElementById('txtEditEmployeePosition').value = this.position;
+    	document.getElementById('txtEditEmployeeWage').value = this.wage;
     	document.getElementById('txtEditEmployeeSSN').value = "***-**-****";
     	document.getElementById('txtEditEmployeeAddress').value = this.home.address;
     	document.getElementById('txtEditEmployeeCity').value = this.home.city;
@@ -185,6 +196,8 @@ Template.employees.events({
 						var firstname = $('#txtEditEmployeeFName').val().trim();
 						var lastname = $('#txtEditEmployeeLName').val().trim();
 						var position = $('#txtEditEmployeePosition').val().trim();
+						var wage = document.getElementById("txtEditEmployeeWage").value;
+						wage = parseFloat(wage);
 						var ssn = $('#txtEditEmployeeSSN').val().trim();
 						var address = $('#txtEditEmployeeAddress').val().trim();
 						var city = $('#txtEditEmployeeCity').val().trim();
@@ -192,7 +205,7 @@ Template.employees.events({
 						var zip = $('#txtEditEmployeeZip').val().trim();
 
 						if (firstname == '' || lastname == '' || address == '' || city == '' ||
-							state == '') {
+							state == '' || wage == '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
@@ -207,6 +220,14 @@ Template.employees.events({
 							return false;
 						}
 
+						if ( !isNaN(wage)) {
+							wage = wage.toFixed(2);
+						}
+						else {
+							swal('Oops...', 'Wage must be a number !', 'error');
+							return false;
+						}
+
 						var match = Employees.findOne({ SSN: new RegExp('^' + ssn + '$', "i") });
 						if (match) {
 							swal('Oops...', 'That employee already exists!', 'error');
@@ -216,6 +237,7 @@ Template.employees.events({
 						Employees.insert({
 							name: {firstname:firstname, lastname:lastname},
 							position: position,
+							wage: wage,
 							ssn: ssn,
 							home: {address:address, city:city, state:state, zip:zip}
 						});
