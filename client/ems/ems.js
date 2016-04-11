@@ -60,12 +60,37 @@ Template.employees.helpers({
   
   Template.schedule.events({
     'click .addEvent': function () {
-      /*  Events.insert({
-            date: new Date()
-        })
-        */
-        window.alert("add event clicked");
-    },
+            
+            bootbox.dialog({
+                title: "Create New Event...",
+                onEscape: true,
+                backdrop: true,
+                message: renderTmp(Template.dialogEditEvent),
+                buttons: {
+                    success: {
+                        label: "Create Event",
+                        className: "btn-success",
+                        callback: function () {
+                            var event_name = $("#txtEditEventTitle").val();
+                            //var event_date = $("#txtEditEventDate").val();
+                            var event_date = new Date();
+                            Events.insert({
+                                title: event_name,
+                                start: event_date,
+                            });
+                            
+                            var event={title: event_name, start:  event_date};
+                            
+                            $('#calendar').fullCalendar( 'renderEvent', event, true);
+                            
+                            swal('Success!', 'Event added!', 'success');
+                            return true;
+                        }
+                    }
+                }
+            });
+
+      },
     'click .removeEvent':function() {
         /*var event = Events.findOne();
         if(event) {

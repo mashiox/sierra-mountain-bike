@@ -111,14 +111,73 @@
 </template>
 
 <template name="schedule">
-   
-    <!--{{ > ReactiveFullcalendar options=calendarOptions }}  -->
-     
-     {{>fullcalendar options}}
-     
+    <!--{{>fullcalendar options}}  -->
+     <div id='calendar'> </div>
+
+     <script>
+        
+    $(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar:not(".fc-event")').on('contextmenu', function (e) {
+        e.preventDefault()
+    })
+    
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+        header: {
+                left: '',
+                center: 'title',
+                right: 'today month,agendaWeek,agendaDay prev,next'
+            },
+            class: "mainCalendar",
+            height: 600,
+            handleWindowResize:true,
+            editable: true,
+            selectable: true,
+            dayClick: function(){
+
+              alert('day clicked')  
+            },
+            eventRender: function (event, element) {
+                element.bind('mousedown', function (e) {
+                 if (e.which == 3) {
+                        alert(event.title);
+                        
+                }
+                 });
+            }
+         })
+
+    });
+</script>
     <button class="addEvent">Add Event</button>
     <button class="removeEvent">Remove Event</button>
      
+</template>
+
+<template name="dialogEditEvent">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditEventTitle">Title</label>
+						<textarea id="txtEditEventTitle" style="width: 400px; height: 40px;" class="form-control input-md" placeholder="Title"></textarea>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditEventDate">Date</label>
+						<textarea id="txtEditEventDate" style="width: 400px; height: 40px;" class="form-control input-md" placeholder="Date"></textarea>
+					</div>
+				</div>
+                
+			</form>
+		</div>
+	</div>
 </template>
 
 <template name="clock">
