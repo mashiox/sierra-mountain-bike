@@ -1,20 +1,42 @@
 <template name="vendor">
 	<div class="body-container">
 		<div class="item">
-			{{ > vendorTable }}
+			<h3>Vendor Management System</h3>
+			<nav id="vendorNavigation">
+				<ul class="pagination">
+					<li class="active" id="Vendors"><a href="#">Vendors</a></li>
+					<li id="Orders"><a href="#">Orders</a></li>
+				</ul>
+			</nav>
+			<br />
+			<div class="tableVendors" id="displayTable">
+				{{> vendors}}
+			</div>
+			<div class="tableOrders" id="displayTable" style="display:none;">
+				{{> orders}}
+			</div>
 		</div>
 	</div>
 </template>
 
-<template name="vendorTable">
+<template name="vendors">
 	{{> reactiveTable settings=AllVendorsViewSettings }}
 
-	<button type="button" class="btn btn-default" id="btnAddVendor">Add Vendor</button>
+	<button type="button" class="btn btn-default" id="btnAddVendor"><span class="glyphicon glyphicon-plus"></span> Add Vendor</button>
 </template>
 
+<template name="orders">
+	{{> reactiveTable settings=AllOrdersViewSettings }}
+
+	<button type="button" class="btn btn-default" id="btnAddVendorOrder"><span class="glyphicon glyphicon-plus"></span> Add Vendor Order</button>
+</template>
+
+
+
+
 <template name="vendorOptionsColumn">
-	<button type="button" id="btnEditVendor" class="btn btn-default">Edit</button>
-	<button type="button" id="btnDeleteVendor" class="btn btn-default">Delete</button>
+	<button type="button" id="btnEditVendor" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+	<button type="button" id="btnDeleteVendor" class="btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Delete</button>
 </template>
 
 <template name="dialogEditVendor">
@@ -46,4 +68,123 @@
 			</form>
 		</div>
 	</div>
+</template>
+
+
+
+
+
+<template name="vendorOrderOptionsColumn">
+	<button type="button" id="btnEditVendorOrderSettings" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Settings</button>
+	<button type="button" id="btnEditVendorOrderItems" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span> Items</button>
+</template>
+
+
+
+
+<template name="dialogEditVendorOrder">
+	<div class="row">
+		<div class="col-md-12">
+			<form class="form-horizontal">
+
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="selectEditVendorOrderVendorID">Vendor</label>
+						<select id="selectEditVendorOrderVendorID" class="form-control input-md">
+							<option disabled selected hidden>Select Vendor</option>
+							{{#each All_Vendors}}
+							<option value="{{this._id}}">{{this.Name}}</option>
+							{{/each}}
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditVendorOrderDeliveryAddress">Delivery Address</label>
+						<textarea id="txtEditVendorOrderDeliveryAddress" style="width: 300px; height: 100px;" class="form-control" placeholder="Delivery Address"></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-6">
+						<label for="selectEditVendorOrderShippingType">Shipping Type</label>
+						<select id="selectEditVendorOrderShippingType" class="form-control input-md">
+							<option value="First-Class Mail (USPS)">First-Class Mail (USPS)</option>
+							<option value="Priority Mail Express (USPS)">Priority Mail Express (USPS)</option>
+							<option value="Priority Mail (USPS)">Priority Mail (USPS)</option>
+							<option value="Next Day Air (UPS)">Next Day Air (UPS)</option>
+							<option selected value="Ground (UPS)">Ground (UPS)</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditVendorOrderReceiptDate">Receipt Date</label>
+						<input id="txtEditVendorOrderReceiptDate" type="text" placeholder="Receipt Date" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-4">
+						<label for="selectEditVendorOrderStatus">Status</label>
+						<select id="selectEditVendorOrderStatus" class="form-control input-md">
+							<option selected value="Pending">Pending</option>
+							<option value="Shipped">Shipped</option>
+							<option value="Canceled">Canceled</option>
+						</select>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+	</div>
+</template>
+
+
+
+<template name="dialogEditVendorOrderItems">
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-horizontal">
+
+				<div class="form-group">
+					<div class="col-lg-12">
+						<select id="selectEditVendorOrderItemInventory" class="form-control input-md">
+							<option selected hidden value="">Select Inventory Product</option>
+							{{#each All_Inventory}}
+							<option value="{{this._id}}">{{this.name}}</option>
+							{{/each}}
+						</select>
+
+						<input id="txtEditVendorOrderItemsQuantity" type="text" placeholder="Quantity" class="form-control input-md">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-lg-12">
+						<button type="button" id="btnEditVendorOrderItemsAddItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Item</button>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="form-group">
+					<div class="col-lg-12">
+						{{> reactiveTable settings=DynamicVendorOrderItems }}
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</template>
+
+
+
+<template name="vendorOrderItemsOptionsColumn">
+	<button type="button" id="btnEditVendorOrderItemQuantity" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Quantity</button>
+	<button type="button" id="btnEditVendorOrderItemRemove" class="btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Remove</button>
 </template>

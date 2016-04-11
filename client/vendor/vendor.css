@@ -6,3 +6,7 @@ table#vendorTable tbody tr {
 table#vendorTable tbody{
     height: auto;
 }
+
+#vendorNavigation{
+	float: left;
+}
