@@ -185,14 +185,33 @@ Template.orders.helpers({
 						return Vendors.findOne({ _id: value }).Name;
 					}
 				},
+
+
 				{ key: 'Status', label: 'Status' },
+
+
+
 				{
-					key: '_id',
-					label: 'Total',
+					key: 'ShippingType',
+					label: 'Shipping',
 					fn: function (value, object, key) {
-						return OrderCost(value);
+						return "$" + FormatMoney(GetOrderShipping(value), 2);
 					}
 				},
+
+
+
+
+				{
+					key: '_id',
+					label: 'Gross Total',
+					fn: function (value, object, key) {
+						return GetOrderGrossTotal(value);
+					}
+				},
+
+
+
 				{ key: 'options', label: 'Options', tmpl: Template.vendorOrderOptionsColumn }
 			]
 		}
@@ -375,6 +394,8 @@ Template.orders.events({
 			document.getElementById('dialogEditVendorOrderItemsAddItemControls').style.visibility = "hidden";
 			document.getElementById('dialogEditVendorOrderItemsAddItemControls').style.display = 'none';
 		}
+
+		UpdateOrderSubtotalHeader();
 	},
 })
 
@@ -401,9 +422,9 @@ Template.dialogEditVendorOrderItems.helpers({
 				},
 				{
 					key: 'ProductID',
-					label: 'Unit Cost',
+					label: 'Unit Cost + Tax',
 					fn: function (value, object, key) {
-						return ProductCost(value);
+						return ProductSubtotal(value);
 					}
 				},
 				{ key: 'Quantity', label: 'Quantity' },
@@ -448,6 +469,8 @@ Template.dialogEditVendorOrderItems.events({
 			timer: 1200,
 			showConfirmButton: false
 		});
+
+		UpdateOrderSubtotalHeader();
 	},
 
 
@@ -469,6 +492,8 @@ Template.dialogEditVendorOrderItems.events({
 				VendorOrderItems.update({ _id: obj._id }, { $set: { Quantity: newQuantity } });
 			}
 		});
+
+		UpdateOrderSubtotalHeader();
 	},
 
 
@@ -490,6 +515,8 @@ Template.dialogEditVendorOrderItems.events({
 		function () {
 			VendorOrderItems.remove(obj._id);
 		});
+
+		UpdateOrderSubtotalHeader();
 	}
 })
 
@@ -518,22 +545,73 @@ function CanModifyOrder(orderID) {
 }
 
 
-function OrderCost(orderID) {
+
+
+
+
+function GetOrderShipping(shippingType) {
+	switch(shippingType) {
+		case "First-Class Mail (USPS)":
+			return 30.35;
+		case "Priority Mail Express (USPS)":
+			return 25.45;
+		case "Priority Mail (USPS)":
+			return 15.12;
+		case "Next Day Air (UPS)":
+			return 18.74;
+		case "Ground (UPS)":
+			return 8.05;
+	} 
+}
+
+
+
+
+
+
+function GetOrderItemTax(cost) {
+	return cost * 0.75;
+}
+
+
+function GetItemTotal(cost, quantity) {
+	return GetOrderItemTax(cost) * quantity;
+}
+
+
+
+function GetOrderSubtotal(orderID) {
 	var total = 0;
 
 	VendorOrderItems.find({ OrderID: orderID }).map(function (doc) {
 		var product = Inventory.findOne({ _id: doc.ProductID });
-		total += (product.cost * doc.Quantity);
+		total += GetItemTotal(product.cost, doc.Quantity);
 	});
 
-	return "$" + FormatMoney(total, 2);
+	return total;
 }
 
-function ProductCost(productID)
+
+
+
+function GetOrderGrossTotal(orderID) {
+	var order = VendorOrders.findOne({ _id: orderID });
+	return "$" + FormatMoney(GetOrderSubtotal(orderID) + GetOrderShipping(order.ShippingType), 2);
+}
+
+
+function UpdateOrderSubtotalHeader() {
+	document.getElementById('headerEditVendorOrderItemsSubtotal').innerHTML = "Subtotal = " + "$" + FormatMoney(GetOrderSubtotal(activeVendorOrderID));
+}
+
+
+
+function ProductSubtotal(productID)
 {
 	var product = Inventory.findOne({ _id: productID });
-	return "$" + FormatMoney(product.cost, 2);
+	return "$" + FormatMoney(GetOrderItemTax(product.cost), 2);
 }
+
 
 function FormatMoney(n, c) {
 	var c = isNaN(c = Math.abs(c)) ? 2 : c,
@@ -544,12 +622,6 @@ function FormatMoney(n, c) {
 		j = (j = i.length) > 3 ? j % 3 : 0;
 	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 }
-
-
-
-
-
-
 
 
 
