@@ -133,11 +133,10 @@
 							<option selected value="Pending">Pending</option>
 							<option value="Shipped">Shipped</option>
 							<option value="Canceled">Canceled</option>
+							<option selected value="Completed">Completed</option>
 						</select>
 					</div>
 				</div>
-
-
 			</form>
 		</div>
 	</div>
@@ -150,26 +149,26 @@
 		<div class="col-lg-12">
 			<form class="form-horizontal">
 
-				<div class="form-group">
-					<div class="col-lg-12">
-						<select id="selectEditVendorOrderItemInventory" class="form-control input-md">
-							<option selected hidden value="">Select Inventory Product</option>
-							{{#each All_Inventory}}
-							<option value="{{this._id}}">{{this.name}}</option>
-							{{/each}}
-						</select>
+				<div id="dialogEditVendorOrderItemsAddItemControls">
+					<div class="form-group">
+						<div class="col-lg-12">
+							<select id="selectEditVendorOrderItemInventory" class="form-control input-md">
+								<option selected hidden value="">Select Inventory Product</option>
+								{{#each All_Inventory}}
+								<option value="{{this._id}}">{{this.name}}</option>
+								{{/each}}
+							</select>
 
-						<input id="txtEditVendorOrderItemsQuantity" type="text" placeholder="Quantity" class="form-control input-md">
+							<input id="txtEditVendorOrderItemsQuantity" type="text" placeholder="Quantity" class="form-control input-md">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-lg-12">
+							<button type="button" id="btnEditVendorOrderItemsAddItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Item</button>
+						</div>
 					</div>
 				</div>
-
-				<div class="form-group">
-					<div class="col-lg-12">
-						<button type="button" id="btnEditVendorOrderItemsAddItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Item</button>
-					</div>
-				</div>
-
-				<hr />
 
 				<div class="form-group">
 					<div class="col-lg-12">

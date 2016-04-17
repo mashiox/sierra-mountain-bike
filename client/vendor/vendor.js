@@ -330,11 +330,11 @@ Template.orders.events({
 		document.getElementById('txtEditVendorOrderReceiptDate').value = this.ReceiptDate;
 		document.getElementById('selectEditVendorOrderStatus').value = this.Status;
 
-		if (this.Status == "Shipped") {
+		if (!CanModifyOrder(activeVendorOrderID)) {
 			document.getElementById('txtEditVendorOrderDeliveryAddress').disabled = true;
 			document.getElementById('selectEditVendorOrderShippingType').disabled = true;
 			document.getElementById('txtEditVendorOrderReceiptDate').disabled = true;
-			document.getElementById('selectEditVendorOrderStatus').disabled = true;
+			//document.getElementById('selectEditVendorOrderStatus').disabled = true;
 		}
 	},
 
@@ -348,15 +348,12 @@ Template.orders.events({
 
 		var obj = this;
 
-		if (obj.Status == "Shipped") {
-			swal('Oops...', 'This order has shipped!', 'error');
-			return false;
-		}
-
 		activeVendorOrderID = obj._id;
 
+		var order = VendorOrders.findOne({ _id: activeVendorOrderID });
+
 		bootbox.dialog({
-			title: "Edit vendor order items",
+			title: "Vendor order status: " + order.Status,
 			onEscape: true,
 			backdrop: true,
 			size: 'large',
@@ -372,6 +369,12 @@ Template.orders.events({
 				}
 			}
 		});
+
+		if (!CanModifyOrder(activeVendorOrderID))
+		{
+			document.getElementById('dialogEditVendorOrderItemsAddItemControls').style.visibility = "hidden";
+			document.getElementById('dialogEditVendorOrderItemsAddItemControls').style.display = 'none';
+		}
 	},
 })
 
@@ -404,12 +407,11 @@ Template.dialogEditVendorOrderItems.helpers({
 					}
 				},
 				{ key: 'Quantity', label: 'Quantity' },
-				{ key: 'options', label: 'Options', tmpl: Template.vendorOrderItemsOptionsColumn }
+				{ key: 'options', label: 'Options', tmpl: CanModifyOrder(activeVendorOrderID) ? Template.vendorOrderItemsOptionsColumn : null }
 			]
 		}
 	}
 })
-
 
 
 
@@ -492,6 +494,24 @@ Template.dialogEditVendorOrderItems.events({
 })
 
 
+function CanModifyOrder(orderID) {
+	var order = VendorOrders.findOne({ _id: orderID });
+
+	if (order.Status == "Shipped")
+	{
+		return false;
+	}
+
+	if (order.Status == "Canceled") {
+		return false;
+	}
+
+	if (order.Status == "Completed") {
+		return false;
+	}
+
+	return true;
+}
 
 
 function OrderCost(orderID) {
