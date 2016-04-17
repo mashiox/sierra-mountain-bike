@@ -506,6 +506,10 @@ function CanModifyOrder(orderID) {
 		return false;
 	}
 
+	if (order.Status == "Returned") {
+		return false;
+	}
+
 	if (order.Status == "Completed") {
 		return false;
 	}
