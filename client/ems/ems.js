@@ -71,17 +71,21 @@ Template.employees.helpers({
                         label: "Create Event",
                         className: "btn-success",
                         callback: function () {
-                            var event_name = $("#txtEditEventTitle").val();
+                            var emp_id = $("#selectEditEventTitle").val();
+                            var event_emp = Employees.findOne({_id: emp_id});
+                            var event_name = event_emp.name.firstname + " " + event_emp.name.lastname;
                             var event_month = $("#txtEditEventMonth").val();
                             var event_day = $("#txtEditEventDay").val();
                             var event_year = $("#txtEditEventYear").val();
-                            var event_date = new Date(event_year,event_month-1,event_day);
-                            var event={title: event_name, start:  event_date};   
-                            Events.insert({
-                                title: event.title,
-                                start: event.start,
+                            var event_hour = $("#txtEditEventHour").val();
+                            var event_min = $("#txtEditEventMin").val();
+                            var event_date = new Date(event_year,event_month-1,event_day,event_hour,event_min);
+                            var event_id = Events.insert({
+                                title: event_name,
+                                start: event_date,
                             });
-
+                            var event={title: event_name, start:  event_date, id: event_id};
+                            
                             $('#calendar').fullCalendar( 'renderEvent', event, true);
                             
                             swal('Success!', 'Event added!', 'success');
@@ -94,7 +98,11 @@ Template.employees.helpers({
       }
 
 });
-
+Template.dialogEditEvent.helpers({
+	All_Employees: function () {
+		return Employees.find();
+	}
+})
 
 Template.employees.events({
 	'click button#btnEditEmployee': function (event) {

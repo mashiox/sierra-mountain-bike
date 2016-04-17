@@ -133,8 +133,20 @@
             },
             class: "mainCalendar",
             events: function(start, end, timezone, callback) {
-                      callback(Events.find({}).fetch());
-                    },
+                
+                       var eventsArray = [];
+                       var allEvents = Events.find({}).fetch();
+                       allEvents.forEach(function(row) {
+                            eventObj = {
+                                title: row.title,
+                                start: row.start,
+                                id: row._id,
+                               }
+                            eventsArray.push(eventObj);
+                        });
+
+                      callback(eventsArray);
+            },    
             height: 600,
             handleWindowResize:true,
             editable: true,
@@ -143,14 +155,27 @@
 
               alert('day clicked')  
             },
-            eventRender: function (event, element) {
+            eventDrop: function(event, delta, revertFunc) {
+                alert(event.title + " was dropped on " + event.start.format());
+
+                if (!confirm("Are you sure about this change?")) {
+                    revertFunc(); 
+                }
+                else{
+                    Events.update({_id: event.id},{ $set: {start: event.start.format() }} );
+                }
+            },
+            eventRender: function (event, element , revertFunc) {
                 element.bind('mousedown', function (e) {
                  if (e.which == 3) {
-                        alert(event.title);
-                        
+                    if (confirm("Are you sure you want to remove "+event.title+"?")) {
+                        Events.remove({_id: event.id});
+                        $('#calendar').fullCalendar( 'removeEvents', event.id);
+                    }   
                  }
                  });
             }
+            
          })
 
     });
@@ -166,7 +191,13 @@
 				<div class="form-group">
 					<div class="col-md-10">
 						<label for="txtEditEventTitle">Title</label>
-						<textarea id="txtEditEventTitle" style="width: 400px; height: 40px;" class="form-control input-md" placeholder="Title"></textarea>
+						<select id="selectEditEventTitle" class="form-control input-md">
+							<option disabled selected hidden>Select Employee</option>
+							{{#each All_Employees}}
+							<option value="{{this._id}}">{{this.name.firstname}} {{this.name.lastname}}</option>
+							{{/each}}
+						</select>
+                        <!--<textarea id="txtEditEventTitle" style="width: 400px; height: 40px;" class="form-control input-md" placeholder="Title"></textarea> -->
 					</div>
 				</div>
                 
@@ -176,6 +207,15 @@
 						<textarea id="txtEditEventMonth" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Month: xx"></textarea>
                         <textarea id="txtEditEventDay" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Day: xx"></textarea>
                         <textarea id="txtEditEventYear" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Year: xxxx"></textarea>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-10">
+						<label for="txtEditEventTime">Time (In Military Time)</label>
+						<textarea id="txtEditEventHour" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Hour: xx"></textarea>
+                        <textarea id="txtEditEventMin" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Minutes: xx"></textarea>
+                        
 					</div>
 				</div>
                 
