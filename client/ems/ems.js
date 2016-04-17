@@ -72,15 +72,16 @@ Template.employees.helpers({
                         className: "btn-success",
                         callback: function () {
                             var event_name = $("#txtEditEventTitle").val();
-                            //var event_date = $("#txtEditEventDate").val();
-                            var event_date = new Date();
+                            var event_month = $("#txtEditEventMonth").val();
+                            var event_day = $("#txtEditEventDay").val();
+                            var event_year = $("#txtEditEventYear").val();
+                            var event_date = new Date(event_year,event_month-1,event_day);
+                            var event={title: event_name, start:  event_date};   
                             Events.insert({
-                                title: event_name,
-                                start: event_date,
+                                title: event.title,
+                                start: event.start,
                             });
-                            
-                            var event={title: event_name, start:  event_date};
-                            
+
                             $('#calendar').fullCalendar( 'renderEvent', event, true);
                             
                             swal('Success!', 'Event added!', 'success');
@@ -90,14 +91,8 @@ Template.employees.helpers({
                 }
             });
 
-      },
-    'click .removeEvent':function() {
-        /*var event = Events.findOne();
-        if(event) {
-            Events.remove(event._id);
-        }*/
-        window.alert("remove event clicked");
-    }
+      }
+
 });
 
 

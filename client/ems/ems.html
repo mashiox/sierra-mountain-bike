@@ -132,6 +132,9 @@
                 right: 'today month,agendaWeek,agendaDay prev,next'
             },
             class: "mainCalendar",
+            events: function(start, end, timezone, callback) {
+                      callback(Events.find({}).fetch());
+                    },
             height: 600,
             handleWindowResize:true,
             editable: true,
@@ -145,7 +148,7 @@
                  if (e.which == 3) {
                         alert(event.title);
                         
-                }
+                 }
                  });
             }
          })
@@ -171,7 +174,9 @@
                 <div class="form-group">
 					<div class="col-md-10">
 						<label for="txtEditEventDate">Date</label>
-						<textarea id="txtEditEventDate" style="width: 400px; height: 40px;" class="form-control input-md" placeholder="Date"></textarea>
+						<textarea id="txtEditEventMonth" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Month: xx"></textarea>
+                        <textarea id="txtEditEventDay" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Day: xx"></textarea>
+                        <textarea id="txtEditEventYear" style="width: 100px; height: 40px;" class="form-control input-md" placeholder="Year: xxxx"></textarea>
 					</div>
 				</div>
                 
