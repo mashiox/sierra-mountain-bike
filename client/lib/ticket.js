@@ -102,3 +102,39 @@ SMBC.Ticket.openProblemTypeReport = function(){
         return ticket.Problem;
     });
 }
+
+SMBC.Ticket.addDefective = function(item){
+    var cid;
+    var smb = Customers.findOne({Name: "Sierra Mountain Bike"});
+    if (!smb){
+        cid = Customers.insert({
+            Name: "Sierra Mountain Bike",
+            Phone: "123.456.7890",
+            Address: "1 Main St."
+        });
+    }
+    else cid = smb._id;
+    
+    var isId;
+    var issue = CommonProblems.findOne({Description: "Defective Product"});
+    if ( !issue ){
+        isId = CommonProblems.insert({
+            Description: "Defective Product",
+            Cost: 0,
+            Troubleshooting: "Investigate Issue"
+        })
+    }
+    else isId = issue._id;
+    
+    var notes = "Defective Count: "+item.planned+"\nItem Name: "+item.name+"\nDescription: "+item.description;
+    
+    Tickets.insert({
+        CustomerId: cid,
+        Date: new Date(),
+        CloseDate: -1,
+        Problem: isId,
+        Status: "Open",
+        Notes: notes
+    });
+    
+}

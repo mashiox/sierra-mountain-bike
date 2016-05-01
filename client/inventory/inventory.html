@@ -108,11 +108,59 @@
 		<div class="col-md-12">
 			<form class="form-horizontal">
                 
-				<div class="form-group">
+				<!--
+                <div class="form-group">
 					<div class="col-md-10">
 						<label for="txtProductName">{{name}}</label>
 					</div>
 				</div>
+                -->
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="radio" name="action" id="actionRadioSell" value="0" checked>
+                        <label for="actionRadioSell" class="middleAlign">
+                            Sell Inventory
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">                        
+                        <input type="radio" name="action" id="actionRadioRm" value="1" >
+                        <label for="actionRadioRm" class="middleAlign">
+                            Remove Inventory
+                        </label>
+                    </div>
+                </div>
+                        
+                <div class="form-group">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-6">
+                        <input type="checkbox" id="rtvCheckbox" value="1" disabled>
+                        <label for="rtvCheckbox" class="middleAlign">
+                            Return to Vendor
+                        </label>
+                    </div>
+                </div>
+                      
+                <div class="form-group">
+                    <div class="col-md-1"></div>                    
+                    <div class="col-md-6">
+                        <input type="checkbox" id="defectiveProd" value="1" disabled>
+                        <label for="defectiveProd" class="middleAlign">
+                            Product is Defective
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-6">                        
+                        <input type="radio" name="action" id="actionRadioRm" value="1" >
+                        <label for="actionRadioRm" class="middleAlign">
+                            Add Inventory
+                        </label>
+                    </div>
+                </div>
                 
                 <div class="form-group">
 					<div class="col-md-4">
@@ -123,7 +171,7 @@
                         <label for="txtProductQuantity">
                             In-cart stock: {{planned}}
                         </label>
-                        <input id="txtProductQuantity" type="text" placeholder="+/- Inventory Quantity" class="form-control input-md">
+                        <input id="txtProductQuantity" type="text" placeholder="Adjustment Quantity" class="form-control input-md">
 					</div>
 				</div>
                 
@@ -189,6 +237,7 @@
                 <thead>
                     <tr>
                         <th>Item</th>
+                        <th>Status</th>
                         <th>In Cart</th>
                         <th>In Stock</th>
                         <th>Price Ea.</th>
@@ -199,14 +248,34 @@
                     {{#each getCart}}
                     <tr>
                         <td>{{name}}</td>
+                        <td>
+                            {{#if isLoss rtv defective}}
+                                {{#if rtv }}
+                                    <span class="label label-warning">RTV</span>
+                                {{/if}}
+                                
+                                {{#if defective }}
+                                    <span class="label label-danger">Defective</span>
+                                {{/if}}
+                            {{else}}
+                            <span class="label label-success">Sale</span>
+                            {{/if}}
+                        </td>
                         <td>{{planned}}</td>
                         <td>{{quantity}}</td>
                         <td>${{cost}}</td>
-                        <td>${{getItemCost planned cost}}</td>
+                        <td>
+                        {{#if isLoss rtv defective }}
+                            ${{getLoss planned cost}}
+                        {{else}}
+                            ${{getItemCost planned cost}}
+                        {{/if}}
+                        </td>
                     </tr>
                     {{/each}}
                     <tr>
                         <th>Subtotal</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

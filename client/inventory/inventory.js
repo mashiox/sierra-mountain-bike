@@ -100,8 +100,19 @@ Template.inventoryTable.events({
                         callback: function(){
                             var product = Inventory.findOne({_id: Session.get("editProductId")});
                             
+                            var action = parseInt( $("input[name=action]:checked").val() );
+                            var rtv = false;
+                            var defective  = false;
+                            if ( action ){
+                                rtv = ( $("input#rtvCheckbox:checked").val() === undefined ? false : true );
+                                defective = ( $("input#defectiveProd:checked").val() === undefined ? false : true );
+                            }
+                            
                             var quantityDelta = parseInt($("input#txtProductQuantity").val());
-                            quantityDelta = ( isNaN(quantityDelta) ? 0 : quantityDelta );
+                            if ( isNaN(quantityDelta) || quantityDelta < 0 ){
+                                swal("Oops...", "Enter a valid quantity!", 'error');
+                                return false;
+                            }
                             
                             var price = parseInt($("input#txtEditProductCost").val())
                             price = ( isNaN(price) ? product.cost : price );
@@ -130,6 +141,8 @@ Template.inventoryTable.events({
                                 });
                                 var item = Inventory.findOne({_id: product._id});
                                 item.planned = quantityDelta;
+                                item.rtv = rtv;
+                                item.defective = defective;
                                 var cart = Session.get("shoppingCart");
                                 cart.push( item );
                                 Session.set("shoppingCart", cart);
@@ -161,7 +174,7 @@ Template.inventoryTable.events({
                             swal("Oops...", "Enter a product name!", "error");
                             return false;
                         }
-                        
+                                                
                         var quantity = parseInt( $("input#txtProductOnHand").val() );
                         if ( isNaN(quantity) || quantity < 0 ){
                             swal("Oops...", "Enter a valid quantity!", 'error');
@@ -221,6 +234,18 @@ Template.dialogEditInventory.helpers({
     }
 })
 
+Template.dialogEditInventory.events({
+    'click input#actionRadioRm': function(event){
+        $("input#rtvCheckbox").prop("disabled", function(i,v){return false;});
+        $("input#defectiveProd").prop("disabled", function(i,v){return false;});
+    },
+    
+    'click input#actionRadioSell': function(event){
+        $("input#rtvCheckbox").prop("disabled", function(i,v){return true;});
+        $("input#defectiveProd").prop("disabled", function(i,v){return true;});
+    }
+})
+
 Template.shoppingCart.helpers({
     shoppingCartExists: function(){
         return Session.get("shoppingCart").length > 0;
@@ -246,6 +271,11 @@ Template.shoppingCart.events({
                     callback: function(){
                         var cart = Session.get("shoppingCart");
                         for ( var index = 0 ; index < cart.length ; index++ ){
+                            
+                            if ( cart[index].defective ){
+                                SMBC.Ticket.addDefective(cart[index]);
+                            }
+                            
                             var item = Inventory.findOne({_id: cart[index]._id });
                             if (item){
                                 Inventory.update({ _id: item._id}, {
@@ -273,9 +303,16 @@ Template.dialogInventoryCheckout.helpers({
     getItemCost: function(planned, cost){
         return planned*cost;
     },
+    isLoss: function(rtv, def){
+        return rtv || def;
+    },
+    getLoss: function(planned, cost){
+        return -planned*cost;
+    },
     getSubtotal: function(){
         if ( Session.get("shoppingCart").length ){
             return Session.get("shoppingCart").map( function(item){
+                if ( item.rtv || item.defective ) return -item.planned*item.cost; 
                 return item.planned*item.cost;
             }).reduce( function(a,b){
                 return a+b;
