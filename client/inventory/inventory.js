@@ -18,9 +18,11 @@ Template.inventoryTable.helpers({
         return Inventory.find({
             $and: [
                 {
+                    // categoryFilter() the function, not the method
                     category: categoryFilter()
                 },
                 {
+                    // conditionFilter() the function, not the method
                     condition: conditionFilter() 
                 }
             ]

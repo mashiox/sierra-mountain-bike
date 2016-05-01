@@ -27,10 +27,56 @@
 </template>
 
 <template name="tickets">
-	{{> reactiveTable settings=all_tickets }}
+    
+    <button type="button" class="btn btn-default btn-success" id="ticket_openTickets">Open Tickets</button>
+    <button type="button" class="btn btn-default" id="ticket_closedTickets">Closed Tickets</button>
+    
+    {{> ticketTable }}
 
 	<button type="button" class="btn btn-default" id="btnAddTicket">Add Ticket</button>
 	<button type="button" class="btn btn-default" id="export">Export Data</button>
+</template>
+
+<template name="ticketTable">
+    
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="input-group col-md-4" style="margin-top:10px;">
+            <span class="input-group-addon" id="basic-addon1">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </span>
+            <input id="ticket_query" type="text" class="form-control" placeholder="Filter" aria-describedby="basic-addon1">
+        </div>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Issue</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each ticket }}
+            <tr>
+                <td> {{ customer }} </td>
+                <td> {{ Status }} </td>
+                <td> {{ formatDate Date }} </td>
+                <td> {{ issue }} </td>
+                <td>
+                    <a href="#" rel="{{_id}}" id="ticket_editTicket">
+                        <button type="button" class="btn btn-default" aria-label="Right Align">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            {{/each }}
+        </tbody>
+    </table>
 </template>
 
 <template name="dialogEditTicket">

@@ -1,3 +1,7 @@
+Template.ticket.onCreated(function(){
+    Session.set("queryFilter", ".");
+})
+
 Template.ticket.events({
     'click li': function (event) {
 		paginationClickHelper(event);
@@ -9,54 +13,39 @@ Template.ticket.events({
 	}
 })
 
-Template.tickets.helpers({
-	all_tickets: function () {
-		return {
-			collection: Tickets,
-			rowsPerPage: 5,
-			showFilter: true,
-			fields: [
-                {
-                    // This beautifully allows the database to be second order.
-                    key: "CustomerId",
-                    label: "Name",
-                    fn: function(value, object, key){
-                        return Customers.findOne({_id: value}).Name;
-                    }
-                },
-                {
-                    key: "Date",
-                    label: "Ticked Opened",
-                    fn: function(value, object, key){
-                        return object.Date.toLocaleFormat();
-                    }
-                },
-                {
-                    key: "Problem",
-                    label: "Problem",
-                    fn: function(value, object, key){
-                        return CommonProblems.findOne({_id: value}).Description;
-                    }
-                },
-                {
-                    key: "CloseDate",
-                    label: "Status",
-                    fn: function(value, object, key){
-                        return value === -1 ? "Open" : "Closed";
-                    }
-                },
-				{ key: 'options', label: 'Options', tmpl: Template.ticketOptionsColumn }
-            ]
-		}
-	}
+Template.ticketTable.helpers({
+    ticket: function(){
+        var rex = new RegExp( Session.get("queryFilter"), "gi");
+        return getTicketCursor().fetch().map(function(item){
+            item.customer = Customers.findOne({ _id: item.CustomerId }).Name;
+            item.issue = CommonProblems.findOne({ _id: item.Problem }).Description;
+            return item;
+        }).filter(function(item){
+            return (
+                item.customer.match( rex )
+                ||
+                item.Status.match( rex )
+                ||
+                item.Date.toLocaleString().match( rex )
+                ||
+                item.issue.match( rex )
+            );
+        });
+    },
+    
+    formatDate: function(d){
+        return d.toLocaleString();
+    },
 })
 
-Template.tickets.events({
-    'click button#btnEditTicket': function (event) {
+Template.ticketTable.events({
+    'click a#ticket_editTicket': function (event) {
     	event.preventDefault();
 
     	var obj = this; // need to store this reference to process the update operation
-
+        
+        Session.set("editTicketId", event.currentTarget.rel);
+        
     	bootbox.dialog({
     		title: "Update ticket...",
     		onEscape: true,
@@ -107,6 +96,25 @@ Template.tickets.events({
     	document.getElementById('txtEditTicketNotes').value = this.Notes;
     	document.getElementById('selectEditTicketStatus').value = this.Status;
     },
+    
+    'keyup input#ticket_query': function(event, template){
+        event.preventDefault();
+        var value = template.find( event.currentTarget).value;
+        Session.set("queryFilter",
+            ( value === "" ? "." : value )
+        )
+    }
+})
+
+Template.tickets.onCreated(function(){
+    Session.set("ticketPointer", true);
+})
+
+Template.tickets.helpers({
+	
+})
+
+Template.tickets.events({
 
 	'click button#btnAddTicket': function (event) {
 		event.preventDefault();
@@ -178,9 +186,28 @@ Template.tickets.events({
             csvArray.push(csvObj);
         });
        JSONToCSVConvertor(csvArray, "Ticket Data", true);
+    },
+    
+    'click button#ticket_openTickets': function(event){
+        event.preventDefault();
+        Session.set("ticketPointer", true );
+        $(event.currentTarget).addClass("btn-success");
+        $("button#ticket_closedTickets").removeClass("btn-success");
+    },
+    
+    'click button#ticket_closedTickets': function(event){
+        event.preventDefault();
+        Session.set("ticketPointer", false );
+        $(event.currentTarget).addClass("btn-success");
+        $("button#ticket_openTickets").removeClass("btn-success");
     }
 })
 
+Template.dialogEditTicket.onRendered(function(){
+    var item = Tickets.findOne({ _id: Session.get("editTicketId") });
+    $("select#selectEditTicketStatus option[value='"+item.Status+"']").attr("selected", "selected");
+})
+ 
 Template.dialogEditTicket.helpers({
 	All_Customers: function () {
 		return Customers.find();
@@ -498,4 +525,10 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+var getTicketCursor = function(){
+    return Session.get("ticketPointer")
+        ? Tickets.find( { CloseDate: { $not: {$ne: -1 } } } )
+        : Tickets.find( { CloseDate: { $ne: -1 } } );
 }
