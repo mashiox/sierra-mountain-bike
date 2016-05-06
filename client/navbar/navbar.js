@@ -3,7 +3,9 @@ Template.navbar.helpers({
         return userLoggedIn();
     },
     
-    
+    isMobile: function(){
+        return Meteor.isCordova;
+    }
 });
 
 Template.navbar.events({
@@ -16,6 +18,12 @@ Template.navbar.events({
 Template.loggedInButtons.helpers({
     username: function () {
         return getUsername();
+    }
+})
+
+Template.navbarLinks.helpers({
+    isMobile: function(){
+        return Meteor.isCordova();
     }
 })
 
