@@ -62,25 +62,25 @@ Template.ticketTable.events({
     					var status = $("#selectEditTicketStatus").val();
 
     					var customer = Customers.findOne({ _id: customerID });
-    					if (customer == null) {
+    					if (customer === null) {
     						swal('Oops...', 'Select a customer!', 'error');
     						return false;
     					}
 
-    					if (customerID == obj.CustomerId && problemID == obj.Problem && notes == obj.Notes && status == obj.Status) {
+    					if (customerID === obj.CustomerId && problemID === obj.Problem && notes === obj.Notes && status === obj.Status) {
     						swal('Oops...', 'No fields were changed', 'warning');
     						return false;
     					}
 
     					var problem = CommonProblems.findOne({ _id: problemID });
-    					if (problem == null) {
+    					if (problem === null) {
     						swal('Oops...', 'Select a problem!', 'error');
     						return false;
     					}
 
     					Tickets.update({ _id: obj._id }, { $set: { CustomerId: customer._id || customer, Problem: problem._id || problem, Status: status, Notes: notes } });
 
-    					if (status != obj.Status && status === "Closed") {
+    					if (status !== obj.Status && status === "Closed") {
     						Tickets.update({ _id: obj._id }, { $set: { CloseDate: new Date() } });
     					}
 
@@ -135,13 +135,13 @@ Template.tickets.events({
 						var status = $("#selectEditTicketStatus").val();
 
 						var customer = Customers.findOne({ _id: customerID });
-						if (customer == null) {
+						if (customer === null) {
 							swal('Oops...', 'Select a customer!', 'error');
 							return false;
 						}
 
 						var problem = CommonProblems.findOne({ _id: problemID });
-						if (problem == null) {
+						if (problem === null) {
 							swal('Oops...', 'Select a problem!', 'error');
 							return false;
 						}
@@ -250,18 +250,18 @@ Template.customers.events({
 						var phone = $('#txtEditCustomerPhone').val().trim();
 						var address = $('#txtEditCustomerAddress').val().trim();
 
-						if (name == '' || phone == '' || address == '') {
+						if (name === '' || phone === '' || address === '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
 
-						if (name == obj.Name && phone == obj.Phone && address == obj.Address) {
+						if (name === obj.Name && phone === obj.Phone && address === obj.Address) {
 							swal('Oops...', 'No fields were changed', 'warning');
 							return false;
 						}
 
 						var match = Customers.findOne({ Name: new RegExp('^' + name + '$', "i") })
-						if (match && match._id != obj._id) {
+						if (match && match._id !== obj._id) {
 							swal('Oops...', 'That customer already exists!', 'error');
 							return false;
 						}
@@ -297,7 +297,7 @@ Template.customers.events({
 						var phone = $('#txtEditCustomerPhone').val().trim();
 						var address = $('#txtEditCustomerAddress').val().trim();
 
-						if (name == '' || phone == '' || address == '') {
+						if (name === '' || phone === '' || address === '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
@@ -365,18 +365,18 @@ Template.problems.events({
 						var cost = $('#txtEditProblemCost').val().trim();
 						var troubleshooting = $('#txtEditProblemTroubleshooting').val().trim();
 
-						if (title == '' || cost == '' || troubleshooting == '') {
+						if (title === '' || cost === '' || troubleshooting === '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
 
-						if (title == obj.Description && cost == obj.Cost && troubleshooting == obj.Troubleshooting) {
+						if (title === obj.Description && cost === obj.Cost && troubleshooting === obj.Troubleshooting) {
 							swal('Oops...', 'No fields were changed', 'warning');
 							return false;
 						}
 
 						var match = CommonProblems.findOne({ Description: new RegExp('^' + title + '$', "i") })
-						if (match && match._id != obj._id) {
+						if (match && match._id !== obj._id) {
 							swal('Oops...', 'That problem already exists!', 'error');
 							return false;
 						}
@@ -412,7 +412,7 @@ Template.problems.events({
 						var cost = $('#txtEditProblemCost').val().trim();
 						var troubleshooting = $('#txtEditProblemTroubleshooting').val().trim();
 
-						if (title == '' || cost == '' || troubleshooting == '')
+						if (title === '' || cost === '' || troubleshooting === '')
 						{
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
@@ -441,7 +441,7 @@ Template.problems.events({
 
 	'click button#stats': function (event) {
 		event.preventDefault();
-		alert("Stats Summary Clicked");
+		swal('Success!', 'Stats Summary Clicked!', 'success');
 	}
 })
 
@@ -456,7 +456,7 @@ var renderTmp = function (template, data) {
 //USED FOR THE EXPORT BUTTON
 function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    var arrData = typeof JSONData !== 'object' ? JSON.parse(JSONData) : JSONData;
     
     var CSV = '';    
     //Set Report title in first row or line
@@ -495,8 +495,8 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
         CSV += row + '\r\n';
     }
 
-    if (CSV == '') {        
-        alert("Invalid data");
+    if (CSV === '') {
+		swal('Oops...', 'Invalid data!', 'error');
         return;
     }   
     

@@ -64,13 +64,13 @@ Template.inventoryTable.events({
     'click ul#inv_conditionLink li a': function(event, template){
         event.preventDefault();
         var value = template.find(event.currentTarget).attributes.value.value;
-        Session.set("conditionFilter", parseInt(value));
+        Session.set("conditionFilter", parseInt(value, 10));
     },
     
     'click ul#inv_categoriesLink li a': function(event, template){
         event.preventDefault();
         var value = template.find(event.currentTarget).attributes.value.value;
-        Session.set("categoryFilter", parseInt(value));
+        Session.set("categoryFilter", parseInt(value, 10) );
         console.log(value);
     },
     
@@ -100,7 +100,7 @@ Template.inventoryTable.events({
                         callback: function(){
                             var product = Inventory.findOne({_id: Session.get("editProductId")});
                             
-                            var action = parseInt( $("input[name=action]:checked").val() );
+                            var action = parseInt( $("input[name=action]:checked").val(), 10 );
                             var rtv = false;
                             var defective  = false;
                             if ( action ){
@@ -108,19 +108,19 @@ Template.inventoryTable.events({
                                 defective = ( $("input#defectiveProd:checked").val() === undefined ? false : true );
                             }
                             
-                            var quantityDelta = parseInt($("input#txtProductQuantity").val());
+                            var quantityDelta = parseInt($("input#txtProductQuantity").val(), 10);
                             if ( isNaN(quantityDelta) || quantityDelta < 0 ){
                                 swal("Oops...", "Enter a valid quantity!", 'error');
                                 return false;
                             }
                             
-                            var price = parseInt($("input#txtEditProductCost").val())
+                            var price = parseInt($("input#txtEditProductCost").val(), 10)
                             price = ( isNaN(price) ? product.cost : price );
                             
-                            var category = parseInt( $("select#txtEditProductCategory").val() );
+                            var category = parseInt( $("select#txtEditProductCategory").val(), 10 );
                             category = ( isNaN(category) ? product.category : category );
                             
-                            var condition = parseInt( $("select#txtEditProductCondition").val() );
+                            var condition = parseInt( $("select#txtEditProductCondition").val(), 10 );
                             condition = ( isNaN(condition) ? product.condition : condition );
                             
                             var desc = $("textarea#txtEditProductDesc").val();
@@ -175,25 +175,25 @@ Template.inventoryTable.events({
                             return false;
                         }
                                                 
-                        var quantity = parseInt( $("input#txtProductOnHand").val() );
+                        var quantity = parseInt( $("input#txtProductOnHand").val(), 10 );
                         if ( isNaN(quantity) || quantity < 0 ){
                             swal("Oops...", "Enter a valid quantity!", 'error');
                             return false;
                         }
                         
-                        var price = parseInt( $("input#txtProductPrice").val() );
+                        var price = parseInt( $("input#txtProductPrice").val(), 10 );
                         if ( isNaN(price) || price < 0 ){
                             swal("Oops...", "Enter a valid price!", 'error');
                             return false;
                         }
                         
-                        var category = parseInt( $("select#txtProductCategory").val() );
+                        var category = parseInt( $("select#txtProductCategory").val(), 10 );
                         if ( isNaN(category) || category < 0 ){
                             swal("Oops...", "Select a valid category!", 'error');
                             return false;
                         }
                         
-                        var condition = parseInt( $("select#txtProductCondition").val() );
+                        var condition = parseInt( $("select#txtProductCondition").val(), 10 );
                         if ( isNaN(condition) || condition < 0 ){
                             swal("Oops...", "Select a valid condition!", 'error');
                             return false;

@@ -133,8 +133,8 @@ Template.employees.events({
 
     					var chk = null; // This is used to test null returns from db updates
 
-						if (firstname == '' || lastname == '' || address == '' || city == '' ||
-							state == '' || wage == '') {
+						if (firstname === '' || lastname === '' || address === '' || city === '' ||
+							state === '' || wage === '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
@@ -157,30 +157,30 @@ Template.employees.events({
 							return false;
 						}
 
-						if (firstname != obj.name.firstname || lastname != obj.name.lastname) {
+						if (firstname !== obj.name.firstname || lastname !== obj.name.lastname) {
 							chk = Employees.update({ _id: obj._id }, { $set: { name: { firstname: firstname, lastname: lastname }}});
-							if (chk == null) {
+							if (chk === null) {
 								swal('Oops...', 'Error processing update', 'warning');
     							return false;
 							}
 						}
-						else if (address!=obj.home.address || city != obj.home.city || state != obj.home.state || zip != obj.home.zip) {
+						else if (address!=obj.home.address || city !== obj.home.city || state !== obj.home.state || zip !== obj.home.zip) {
 							chk = Employees.update({ _id: obj._id }, { $set: { home: { address: address, city: city, state: state, zip: zip }}});
-							if (chk == null) {
+							if (chk === null) {
 								swal('Oops...', 'Error processing update', 'warning');
     							return false;
 							}
 						}
 						else if (position!=obj.position) {
 							chk = Employees.update({ _id: obj._id }, { $set: { position: position}});
-							if (chk == null) {
+							if (chk === null) {
 								swal('Oops...', 'Error processing update', 'warning');
     							return false;
 							}
 						}
 						else if (wage!=obj.wage) {
 							chk = Employees.update({ _id: obj._id }, { $set: { wage: wage}});
-							if (chk == null) {
+							if (chk === null) {
 								swal('Oops...', 'Error processing update', 'warning');
     							return false;
 							}
@@ -232,8 +232,8 @@ Template.employees.events({
 						var state = $('#txtEditEmployeeState').val().trim();
 						var zip = $('#txtEditEmployeeZip').val().trim();
 
-						if (firstname == '' || lastname == '' || address == '' || city == '' ||
-							state == '' || wage == '') {
+						if (firstname === '' || lastname === '' || address === '' || city === '' ||
+							state === '' || wage === '') {
 							swal('Oops...', 'All fields must be filled out!', 'error');
 							return false;
 						}
