@@ -1,5 +1,4 @@
 # Meteor and TypeScript Ignores
-.meteor/
 typings/
 
 # *nix Ignores
