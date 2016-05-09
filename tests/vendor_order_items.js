@@ -1,6 +1,6 @@
 'use strict'
 
-//tests/ticket.js
+//tests/vendor_order_items.js
 var assert = require('assert');
 
 
@@ -9,11 +9,11 @@ suite('Posts', function(){
     /**
      * SERVER SIDE TEST
      */
-    test('ticket_server', function(done, server){
+    test('vendor_order_items_server', function(done, server){
         server.eval(function(){
-            // Insert an item into Tickets
-            Tickets.insert({title: 'ticket test, server'});
-            var docs = Tickets.find().fetch();
+            // Insert an item into VendorOrderItems
+            VendorOrderItems.insert({title: 'ticket test, server'});
+            var docs = VendorOrderItems.find().fetch();
             emit('docs', docs);
         });
         
@@ -27,9 +27,9 @@ suite('Posts', function(){
     /**
      * Server + Client test
      */ 
-    test('ticket_client_and_server', function(done, server, client){
+    test('vendor_order_items_client_and_server', function(done, server, client){
         server.eval(function(){
-            Tickets.find().observe({
+            VendorOrderItems.find().observe({
                 added: addedNewPost
             });
             
